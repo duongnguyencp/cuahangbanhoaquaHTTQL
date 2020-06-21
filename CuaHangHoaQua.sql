@@ -280,6 +280,7 @@ insert into [CuaHangHoaQua].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,
 insert into [CuaHangHoaQua].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'mle7@sourceforge.net','10khongco',3,3,26);
 insert into [CuaHangHoaQua].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'pabdy6@globo.com','10khongco',3,2,27);
 insert into [CuaHangHoaQua].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'mle7@sourceforge.net','10khongco',3,2,28);
+insert into [CuaHangHoaQua].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Bán Hàng',N'mle7@sourceforge.net','10khongco',4,2,105025);
 SET IDENTITY_INSERT [CuaHangHoaQua].[dbo].NhanVien OFF; 
 /*------------------KHO-----------------*/
 delete from [CuaHangHoaQua].[dbo].Kho 

@@ -25,6 +25,7 @@ C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\BienLaiXuatDAO.
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BienLaiXuat.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\NhaCungCapDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\HikariCPDataSource.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\HoaDonBanHang.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\CongNoDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDNhapHangFrm.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\BienLaiNhapDAO.java
@@ -51,3 +52,4 @@ C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BienLaiNhap.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\DbConfiguration.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\CongTy.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDCongNoFrm.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\HoaDonBanHangDAO.java

@@ -1,5 +1,6 @@
 view\GDNhapHangFrm$9.class
 view\GDXacNhanNhapHang.class
+view\GDQLPhieuThuChi$8.class
 view\GDTaoPhieuThuChi$2.class
 model\CongNo.class
 control\CongTyDAO.class
@@ -31,6 +32,7 @@ view\GDNhapMatHangFrm$3.class
 view\GDXuatHangFrm$10.class
 view\Loading$1.class
 view\GDXuatHangFrm$2.class
+control\HoaDonBanHangDAO.class
 control\NhaCungCapDAO.class
 view\GDNhapHangFrm$11.class
 view\GDXacNhanNhapHang$2.class
@@ -84,14 +86,17 @@ view\GDXuatHangFrm$1.class
 model\BoPhan.class
 view\GDTaoPhieuThuChi$3.class
 view\GDNhapHangFrm$17.class
+model\HoaDonBanHang.class
 control\SanPhamDAO.class
 view\GDNhapHangFrm$VisitorRenderer.class
+view\GDQLPhieuThuChi$4.class
 view\GDXacNhanNhapHang$5.class
 view\GDNhapHangFrm$5.class
 model\HopDong.class
 control\DbConfiguration.class
 control\DAO.class
 view\GDCongNoFrm$1.class
+view\GDQLPhieuThuChi$7.class
 view\GDNhapHangFrm$8.class
 view\GDNhapMatHangFrm$7.class
 model\CuaHang.class
@@ -105,6 +110,7 @@ view\GDNhapHangFrm$14.class
 view\NewJFrame1.class
 model\RecordChiTietCongNo.class
 view\GDNhapHangFrm$4.class
+view\GDQLPhieuThuChi$6.class
 view\jasper$1.class
 model\BienLaiNhap.class
 view\GDQLPhieuThuChi$VisitorRenderer.class
@@ -121,6 +127,7 @@ view\GDTaoPhieuThuChi$5.class
 view\GDCongNoFrm$VisitorRenderer.class
 model\PhieuThuChi.class
 view\GDTaoPhieuThuChi.class
+view\GDQLPhieuThuChi$5.class
 view\GDCongNoFrm$9.class
 model\NhaCungCap.class
 view\GDCongNoFrm.class

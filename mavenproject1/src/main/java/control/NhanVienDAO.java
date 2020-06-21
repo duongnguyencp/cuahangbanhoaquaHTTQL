@@ -21,6 +21,49 @@ public class NhanVienDAO extends DAO {
     public NhanVienDAO() {
         super();
     }
+    public ArrayList<NhanVien> getAllNVBanHang(){
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = " select * from  [CuaHangHoaQua].[dbo].[NhanVien]  inner join [CuaHangHoaQua].[dbo].[Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Bán hàng'";
+        ArrayList<NhanVien> listNhanVien = new ArrayList<>();
+        try {
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                NhanVien nhanVien = new NhanVien();
+                nhanVien.setId(rs.getInt("idNhanVien"));
+                nhanVien.setEmail(rs.getString("email"));
+                nhanVien.setNgaySinh(rs.getString("ngaySinh"));
+                nhanVien.setGioiTinh(rs.getString("gioiTinh"));
+                nhanVien.setHocVan(rs.getString("hocVan"));
+                nhanVien.setDiaChi(rs.getString("diaChi"));
+                nhanVien.setHoTen(rs.getString("hoTen"));
+                nhanVien.setIdNhanVien(rs.getInt("idNhanVien"));
+                nhanVien.setVaiTro(rs.getString("vaiTro"));
+                nhanVien.setUserName(rs.getString("username"));
+                nhanVien.setPassword(rs.getString("password"));
+                BoPhan boPhan = new BoPhan();
+                CuaHang cuaHang = new CuaHang();
+                boPhan.setId(rs.getInt("idBoPhan"));
+                cuaHang.setId(rs.getInt("idCuaHang"));
+                nhanVien.setBoPhan(boPhan);
+                nhanVien.setCuaHang(cuaHang);
+                listNhanVien.add(nhanVien);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stm.close();
+                con.close();
+            } catch (SQLException ex) {
+                //
+            }
+        }
+        return listNhanVien;
+        
+    }
     public ArrayList<NhanVien> getAllNVKeToan(){
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -74,21 +117,21 @@ public class NhanVienDAO extends DAO {
             rs = stm.executeQuery();
             while (rs.next()) {
                 NhanVien nhanVien = new NhanVien();
-                nhanVien.setId(rs.getInt(7));
-                nhanVien.setEmail(rs.getString(10));
-                nhanVien.setNgaySinh(rs.getString(11));
-                nhanVien.setGioiTinh(rs.getString(12));
-                nhanVien.setHocVan(rs.getString(13));
-                nhanVien.setDiaChi(rs.getString(14));
-                nhanVien.setHoTen(rs.getString(15));
-                nhanVien.setIdNhanVien(rs.getInt(1));
-                nhanVien.setVaiTro(rs.getString(2));
-                nhanVien.setUserName(rs.getString(3));
-                nhanVien.setPassword(rs.getString(4));
+                nhanVien.setId(rs.getInt("idNhanVien"));
+                nhanVien.setEmail(rs.getString("email"));
+                nhanVien.setNgaySinh(rs.getString("ngaySinh"));
+                nhanVien.setGioiTinh(rs.getString("gioiTinh"));
+                nhanVien.setHocVan(rs.getString("hocVan"));
+                nhanVien.setDiaChi(rs.getString("diaChi"));
+                nhanVien.setHoTen(rs.getString("hoTen"));
+                nhanVien.setIdNhanVien(rs.getInt("idNhanVien"));
+                nhanVien.setVaiTro(rs.getString("vaiTro"));
+                nhanVien.setUserName(rs.getString("username"));
+                nhanVien.setPassword(rs.getString("password"));
                 BoPhan boPhan = new BoPhan();
                 CuaHang cuaHang = new CuaHang();
-                boPhan.setId(rs.getInt(5));
-                cuaHang.setId(rs.getInt(6));
+                boPhan.setId(rs.getInt("idBoPhan"));
+                cuaHang.setId(rs.getInt("idCuaHang"));
                 nhanVien.setBoPhan(boPhan);
                 nhanVien.setCuaHang(cuaHang);
                 listNhanVien.add(nhanVien);
@@ -117,21 +160,21 @@ public class NhanVienDAO extends DAO {
             rs = stm.executeQuery();
             while (rs.next()) {
                 NhanVien nhanVien = new NhanVien();
-                nhanVien.setId(rs.getInt(8));
-                nhanVien.setEmail(rs.getString(9));
-                nhanVien.setNgaySinh(rs.getString(10));
-                nhanVien.setGioiTinh(rs.getString(11));
-                nhanVien.setHocVan(rs.getString(12));
-                nhanVien.setDiaChi(rs.getString(13));
-                nhanVien.setHoTen(rs.getString(14));
-                nhanVien.setIdNhanVien(rs.getInt(1));
-                nhanVien.setVaiTro(rs.getString(2));
-                nhanVien.setUserName(rs.getString(3));
-                nhanVien.setPassword(rs.getString(4));
+                nhanVien.setId(rs.getInt("idNhanVien"));
+                nhanVien.setEmail(rs.getString("email"));
+                nhanVien.setNgaySinh(rs.getString("ngaySinh"));
+                nhanVien.setGioiTinh(rs.getString("gioiTinh"));
+                nhanVien.setHocVan(rs.getString("hocVan"));
+                nhanVien.setDiaChi(rs.getString("diaChi"));
+                nhanVien.setHoTen(rs.getString("hoTen"));
+                nhanVien.setIdNhanVien(rs.getInt("idNhanVien"));
+                nhanVien.setVaiTro(rs.getString("vaiTro"));
+                nhanVien.setUserName(rs.getString("username"));
+                nhanVien.setPassword(rs.getString("password"));
                 BoPhan boPhan = new BoPhan();
                 CuaHang cuaHang = new CuaHang();
-                boPhan.setId(rs.getInt(5));
-                cuaHang.setId(rs.getInt(6));
+                boPhan.setId(rs.getInt("idBoPhan"));
+                cuaHang.setId(rs.getInt("idCuaHang"));
                 nhanVien.setBoPhan(boPhan);
                 nhanVien.setCuaHang(cuaHang);
                 listNhanVien.add(nhanVien);

@@ -5,6 +5,7 @@
  */
 package view;
 
+import control.BienLaiKhoDAO;
 import control.KhoDAO;
 import control.NhanVienDAO;
 import control.SanPhamDAO;
@@ -35,6 +36,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import model.RecordSanPham;
 import model.*;
+import control.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 /**
  *
@@ -47,17 +53,22 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
      */
     private ArrayList<RecordSanPham> listSanPham2 = new ArrayList<>();
     private Kho selectedKho;
+    private NhanVien selectNV;
     private ArrayList<RecordSanPham> listSanPhamSelected = new ArrayList<>();
-
+    private int tienHang = 0;
     public GDQLPhieuThuChi() {
         initComponents();
         Kho kho = new Kho();
         kho.setId(1);
         loadSanPham(kho);
         loadKho();
-        addListenerText(jTextFieldCK);
+        loadNV();
+        addListenerText((jTextFieldGiamGia));
+        addListenerText((jTextFieldTiLeThue));
+        jTextFieldSoHD.setText(createMatBienLai());
     }
 //thêm sự kiện ô nhập đơn giá định dạng money
+    //thêm sự kiện ô nhập đơn giá định dạng money
 
     void addListenerText(JTextField field) {
         field.getDocument().addDocumentListener(new DocumentListener() {
@@ -86,9 +97,12 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 try {
-                    if (!field.getText().equals("")) {
-                        DecimalFormat df = new DecimalFormat("#,##0");
-                        String s = df.format(new BigDecimal(field.getText()));
+                    if (field.equals(jTextFieldGiamGia)) {
+                        tinhGiamGia();
+                    } else if (field.equals(jTextFieldTiLeThue)) {
+                        tinhTiLeThue();
+                    } else if (field.equals(jTextFieldVanChuyen)) {
+                        tinhTongCong();
                     }
                 } catch (Exception e2) {
                     JOptionPane.showMessageDialog(field, "Only numbers are allowed", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -116,10 +130,102 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         });
     }
 
+    void tinhTongCong() {
+        int number = 0;
+        int number1 = Integer.parseInt(jTextFieldGiamGia2.getText());
+        int number2 = Integer.parseInt(jTextFieldTiLeThue2.getText());
+        int number3 = Integer.parseInt(jTextFieldVanChuyen.getText());
+        number += tienHang - number1 - number2 - number3;
+        jTextFieldTongCong.setText(dinhDangTien(number));
+    }
+
+    void tinhGiamGia() {
+        int number = Integer.parseInt(jTextFieldGiamGia.getText());
+        number = number * tienHang / 100;
+        jTextFieldGiamGia2.setText(dinhDangTien(number));
+    }
+
+    void tinhTiLeThue() {
+        int number = Integer.parseInt(jTextFieldTiLeThue.getText());
+        number = number * tienHang / 100;
+        jTextFieldTiLeThue2.setText(dinhDangTien(number));
+    }
+
+    int countDigit(int number) {
+        int count = 0;
+        while (number > 0) {
+            number /= 10;
+            count += 1;
+        }
+        return count;
+    }
+
+    void loadNV() {
+        jComboBoxNhanVien.removeAllItems();
+        NhanVienDAO nhanVienDAO = new NhanVienDAO();
+        ArrayList<NhanVien> listNV = nhanVienDAO.getAllNVBanHang();
+        selectNV = listNV.get(0);
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (int i = 0; i < listNV.size(); i++) {
+            model.addElement(listNV.get(i).getHoTen());
+        }
+        jComboBoxNhanVien.setModel(model);
+        jComboBoxNhanVien.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JComboBox comboBoxTest = (JComboBox) e.getSource();
+                int stt = comboBoxTest.getSelectedIndex();
+                selectNV = listNV.get(stt);
+            }
+        });
+    }
+
+    String createMatBienLai() {
+        HoaDonBanHangDAO aO = new HoaDonBanHangDAO();
+        ArrayList<HoaDonBanHang> hoaDonBanHangs = aO.geHoaDonBanHangs();
+        int count = countDigit(hoaDonBanHangs.size() + 1);
+        String maBH = "BH-";
+        int rest = 7 - count;
+        while (rest > 0) {
+            maBH += '0';
+            rest--;
+        }
+        maBH = maBH + "" + hoaDonBanHangs.size();
+        return maBH;
+    }
+
     String dinhDangTien(int number) {
         DecimalFormat df = new DecimalFormat("#,##0");
         String s = df.format(new BigDecimal(number));
         return s;
+    }
+
+    void loadSanPham() {
+        DefaultTableModel defaultTableModel = new DefaultTableModel(new String[]{"", "Mã mặt hàng", "Tên mặt hàng", "Giá bán lẻ", "Hạn sử dụng", "ĐVT", "Số lượng"}, 0);
+        defaultTableModel.setRowCount(0);
+        jTableSanPham.setModel(defaultTableModel);
+        jTableSanPham.getColumnModel().getColumn(0).setPreferredWidth(5);
+        jTableSanPham.getColumnModel().getColumn(3).setPreferredWidth(10);
+        jTableSanPham.getColumnModel().getColumn(5).setPreferredWidth(10);
+        jTableSanPham.getColumnModel().getColumn(6).setPreferredWidth(15);
+        JTableHeader header = jTableSanPham.getTableHeader();
+        header.setResizingAllowed(false);
+        jTableSanPham.setFocusable(false);
+        jTableSanPham.setDefaultRenderer(String.class, new VisitorRenderer());
+        jTableSanPham.setRowMargin(3);
+        jTableSanPham.setRowSelectionAllowed(true);
+        jTableSanPham.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jTableSanPham.setSelectionForeground(new Color(204, 255, 255));
+        int stt = 0;
+        for (int i = 0; i < listSanPham2.size(); i++) {
+            RecordSanPham recordSanPham = listSanPham2.get(i);
+            SanPham sp = recordSanPham.getPham();
+            int soLuong = recordSanPham.getSoLuong();
+            defaultTableModel.addRow(new Object[]{stt, sp.getMaMatHang(), sp.getTenMatHang(), sp.getGia(), sp.getHanSuDung(), sp.getDonViTinh(), soLuong});
+            stt++;
+        }
+
+        defaultTableModel.fireTableDataChanged();
     }
 
     void loadSanPham(Kho kho) {
@@ -151,8 +257,9 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
 
         defaultTableModel.fireTableDataChanged();
     }
+
     void loadSanPhamDaChon() {
-        DefaultTableModel defaultTableModel = new DefaultTableModel(new String[]{"", "Mã mặt hàng", "Tên mặt hàng", "Số lượng", "ĐVT", "Đơn giá","CK%","Tiền giảm","Thành tiền"}, 0);
+        DefaultTableModel defaultTableModel = new DefaultTableModel(new String[]{"", "Mã mặt hàng", "Tên mặt hàng", "Số lượng", "ĐVT", "Đơn giá", "CK%", "Tiền giảm", "Thành tiền"}, 0);
         defaultTableModel.setRowCount(0);
         jTableSpDaChon.setModel(defaultTableModel);
         jTableSpDaChon.getColumnModel().getColumn(0).setPreferredWidth(5);
@@ -168,18 +275,21 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jTableSpDaChon.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jTableSpDaChon.setSelectionForeground(new Color(204, 255, 255));
         int stt = 0;
+        this.tienHang = 0;
         for (int i = 0; i < listSanPhamSelected.size(); i++) {
             RecordSanPham recordSanPham = listSanPhamSelected.get(i);
-            tiLeCK= listTiLeCK.get(i);
+            tiLeCK = listTiLeCK.get(i);
             SanPham sp = recordSanPham.getPham();
             int soLuong = recordSanPham.getSoLuong();
-            int thanhTien=sp.getGia()-tiLeCK*sp.getGia()/100;
-            defaultTableModel.addRow(new Object[]{stt, sp.getMaMatHang(), sp.getTenMatHang(), soLuong, sp.getDonViTinh(),sp.getGia(),tiLeCK, dinhDangTien(sp.getGia()*tiLeCK/100),dinhDangTien(thanhTien)});
+            int thanhTien = sp.getGia() - tiLeCK * sp.getGia() / 100;
+            tienHang += thanhTien;
+            defaultTableModel.addRow(new Object[]{stt, sp.getMaMatHang(), sp.getTenMatHang(), soLuong, sp.getDonViTinh(), sp.getGia(), tiLeCK, dinhDangTien(sp.getGia() * tiLeCK / 100), dinhDangTien(thanhTien)});
             stt++;
         }
 
         defaultTableModel.fireTableDataChanged();
     }
+
     void loadKho() {
         jComboBoxKho.removeAllItems();
         KhoDAO khoDAO = new KhoDAO();
@@ -213,6 +323,13 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         }
     }
 
+    boolean check2RecordSp(RecordSanPham rsp1, RecordSanPham rsp2) {
+        if (rsp1.getPham().getIdSanPham() == rsp2.getPham().getIdSanPham()) {
+            return true;
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -230,36 +347,36 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooserNgayLap = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldSoHD = new javax.swing.JTextField();
+        jTextFieldDienGiai = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableSpDaChon = new javax.swing.JTable();
         jComboBoxNhanVien = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jTextFieldGhiChu = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        jTextFieldTienHang = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jTextFieldGiamGia = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jTextFieldGiamGia2 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        jTextFieldTiLeThue = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        jTextFieldTiLeThue2 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        jTextFieldVanChuyen = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jTextFieldTongCong = new javax.swing.JTextField();
+        jButtonThanhToan = new javax.swing.JButton();
+        jButtonXoaDong = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jTextFieldCK = new javax.swing.JTextField();
 
@@ -345,13 +462,13 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel6.setText("Ngày lập");
 
-        jDateChooser1.setDateFormatString("dd/MM/yyy\n\n");
+        jDateChooserNgayLap.setDateFormatString("dd/MM/yyy\n\n");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel5.setText("Số HĐ");
 
-        jTextField1.setEditable(false);
-        jTextField1.setBackground(new java.awt.Color(204, 255, 255));
+        jTextFieldSoHD.setEditable(false);
+        jTextFieldSoHD.setBackground(new java.awt.Color(204, 255, 255));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel8.setText("Diễn giải");
@@ -376,9 +493,9 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel10.setText("Ghi chú");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldGhiChu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                jTextFieldGhiChuActionPerformed(evt);
             }
         });
 
@@ -391,10 +508,14 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel13.setText("%");
 
+        jTextFieldGiamGia2.setEditable(false);
+
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel14.setText("Tỉ lệ thuế");
 
         jLabel15.setText("%");
+
+        jTextFieldTiLeThue2.setEditable(false);
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel16.setText("Phí vận chuyển");
@@ -405,20 +526,24 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel19.setText("Tổng cộng");
 
-        jTextField11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTextField11.setForeground(new java.awt.Color(255, 51, 51));
-        jTextField11.setText("123123");
+        jTextFieldTongCong.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jTextFieldTongCong.setForeground(new java.awt.Color(255, 51, 51));
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgCuaHangBanHoaQua/icons8_cash_18px.png"))); // NOI18N
-        jButton4.setText("Thanh toán");
-
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgCuaHangBanHoaQua/icons8_delete_18px.png"))); // NOI18N
-        jButton2.setText("Xóa");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonThanhToan.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jButtonThanhToan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgCuaHangBanHoaQua/icons8_cash_18px.png"))); // NOI18N
+        jButtonThanhToan.setText("Thanh toán");
+        jButtonThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonThanhToanActionPerformed(evt);
+            }
+        });
+
+        jButtonXoaDong.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jButtonXoaDong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgCuaHangBanHoaQua/icons8_delete_18px.png"))); // NOI18N
+        jButtonXoaDong.setText("Xóa");
+        jButtonXoaDong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonXoaDongActionPerformed(evt);
             }
         });
 
@@ -432,9 +557,9 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jButton4)
+                        .addComponent(jButtonThanhToan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonXoaDong, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
@@ -446,43 +571,43 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
                             .addComponent(jLabel19))
                         .addGap(5, 5, 5)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField4)
+                            .addComponent(jTextFieldTienHang)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jTextFieldTiLeThue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldGiamGia, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addComponent(jLabel13)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField6))
+                                        .addComponent(jTextFieldGiamGia2))
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField8))))
-                            .addComponent(jTextField9)
+                                        .addComponent(jTextFieldTiLeThue2))))
+                            .addComponent(jTextFieldVanChuyen)
                             .addComponent(jTextField10)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)))
+                            .addComponent(jTextFieldTongCong, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(16, 16, 16)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)))
+                                    .addComponent(jTextFieldGhiChu, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldDienGiai)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(15, 15, 15)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jDateChooserNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(26, 26, 26)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
                             .addComponent(jLabel5))
                         .addGap(15, 15, 15)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
+                            .addComponent(jTextFieldSoHD)
                             .addComponent(jComboBoxNhanVien, 0, 187, Short.MAX_VALUE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -493,12 +618,12 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldSoHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooserNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldDienGiai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
                     .addComponent(jComboBoxNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -507,7 +632,7 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldGhiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,28 +640,28 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel11)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jTextFieldTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGap(27, 27, 27)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton4)
-                                    .addComponent(jButton2))))
+                                    .addComponent(jButtonThanhToan)
+                                    .addComponent(jButtonXoaDong))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel12))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldGiamGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFieldGiamGia2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTiLeThue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldTiLeThue2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldVanChuyen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -547,13 +672,13 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
                             .addComponent(jLabel18))
                         .addGap(15, 15, 15)
                         .addComponent(jLabel19))
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldTongCong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBoxNhanVien, jDateChooser1, jTextField1, jTextField2, jTextField3});
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBoxNhanVien, jDateChooserNgayLap, jTextFieldDienGiai, jTextFieldGhiChu, jTextFieldSoHD});
 
-        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jTextField10, jTextField11, jTextField4, jTextField5, jTextField6, jTextField7, jTextField8, jTextField9});
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jTextField10, jTextFieldGiamGia, jTextFieldGiamGia2, jTextFieldTiLeThue, jTextFieldTiLeThue2, jTextFieldTienHang, jTextFieldTongCong, jTextFieldVanChuyen});
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel7.setText("Chiết khấu");
@@ -615,17 +740,31 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         
+    private void jButtonXoaDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonXoaDongActionPerformed
+        int row = jTableSpDaChon.getSelectedRow();
+        boolean check = true;
+        if (row == -1) {
+            check = false;
+            JOptionPane.showMessageDialog(null, "chọn dòng cần xóa", "cảnh báo chọn dòng xóa", JOptionPane.WARNING_MESSAGE);
+        } else {
+            RecordSanPham rsp = listSanPhamSelected.remove(row);
+            for (int i = 0; i < listSanPham2.size(); i++) {
+                RecordSanPham rsp2 = listSanPham2.get(i);
+                int sl = rsp2.getSoLuong();
+                if (check2RecordSp(rsp, rsp2)) {
+                    rsp2.setSoLuong(sl + rsp.getSoLuong());
+                }
+            }
+            loadSanPham();
+            loadSanPhamDaChon();
+        }
+    }//GEN-LAST:event_jButtonXoaDongActionPerformed
 
+    private void jTextFieldGhiChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGhiChuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_jTextFieldGhiChuActionPerformed
     private int tiLeCK;
-    ArrayList<Integer> listTiLeCK=new ArrayList<>();
+    ArrayList<Integer> listTiLeCK = new ArrayList<>();
     private void jButtonThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonThemActionPerformed
 
         int row = jTableSanPham.getSelectedRow();
@@ -638,17 +777,83 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
             check = false;
             JOptionPane.showMessageDialog(null, "Chọn số lượng nhỏ hơn !", "cảnh báo chọn quá số lượng sản phầm có", JOptionPane.WARNING_MESSAGE);
         } else {
-            if(!jTextFieldCK.getText().equals(""))
-            tiLeCK=Integer.parseInt(jTextFieldCK.getText());
-            RecordSanPham recordSanPham=listSanPham2.get(row);
+            if (!jTextFieldCK.getText().equals("")) {
+                tiLeCK = Integer.parseInt(jTextFieldCK.getText());
+            }
+            RecordSanPham recordSanPham = listSanPham2.get(row);
+            int soLuongBD = recordSanPham.getSoLuong();
+            SanPham sp = recordSanPham.getPham();
+            recordSanPham.setSoLuong(soLuongBD - soLuong);
+            listSanPham2.set(row, recordSanPham);
+            recordSanPham = new RecordSanPham();
+            recordSanPham.setPham(sp);
             recordSanPham.setSoLuong(soLuong);
-            listSanPhamSelected.add(listSanPham2.get(row));
+            listSanPhamSelected.add(recordSanPham);
             listTiLeCK.add(tiLeCK);
             loadSanPhamDaChon();
-            
-        }   
-        
+            loadSanPham();
+            jTextFieldTienHang.setText(dinhDangTien(tienHang));
+        }
+
     }//GEN-LAST:event_jButtonThemActionPerformed
+    int tinhSoLuong() {
+        int number = 0;
+        for (int i = 0; i < listSanPhamSelected.size(); i++) {
+            number += listSanPhamSelected.get(i).getSoLuong();
+        }
+        return number;
+    }
+    private void jButtonThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonThanhToanActionPerformed
+        String ngayLap = ((JTextField) jDateChooserNgayLap.getDateEditor().getUiComponent()).getText();
+        String soPhieu = jTextFieldSoHD.getText();
+        boolean check = true;
+        if (ngayLap.equals("")) {
+            check = false;
+            JOptionPane.showMessageDialog(null, "chọn ngày lập", "cảnh báo chọn ngày lập", JOptionPane.WARNING_MESSAGE);
+        } else if (listSanPhamSelected.size() > 0) {
+            ArrayList<HoaDonBanHang> hoaDonBanHangs = new ArrayList<>();
+            for (int i = 0; i < listSanPhamSelected.size(); i++) {
+                RecordSanPham recordSanPham = listSanPhamSelected.get(i);
+                SanPham sp = recordSanPham.getPham();
+                HoaDonBanHang hoaDonBanHang = new HoaDonBanHang();
+                hoaDonBanHang.setNgay(ngayLap);
+                hoaDonBanHang.setNv(selectNV);
+                hoaDonBanHang.setSoLuong(tinhSoLuong());
+                hoaDonBanHang.setSoTien(tienHang);
+                hoaDonBanHang.setSp(sp);
+                hoaDonBanHangs.add(hoaDonBanHang);
+            }
+            PhieuThuChi phieuThuChi = new PhieuThuChi();
+            phieuThuChi.setNgayLap(ngayLap);
+            phieuThuChi.setDienGiai(jTextFieldDienGiai.getText());
+            phieuThuChi.setLoaiPhieu("Phiếu bán hàng");
+            phieuThuChi.setLyDo(jTextFieldGhiChu.getText());
+            phieuThuChi.setNv(selectNV);
+            phieuThuChi.setTenDoiTuong("Khách hàng");
+            phieuThuChi.setSoPhieu(soPhieu);
+            GDXacNhanBanHang dXacNhanBanHang = new GDXacNhanBanHang(tienHang, hoaDonBanHangs, phieuThuChi);
+            dXacNhanBanHang.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            dXacNhanBanHang.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    JFrame frame = (JFrame) e.getSource();
+                    int result = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Có phải bạn muốn đóng cửa sổ này?",
+                            "Exit Application",
+                            JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        loadSanPham(selectedKho);
+                        listSanPhamSelected.clear();;
+                        loadSanPhamDaChon();
+                    }
+                }
+            });
+            dXacNhanBanHang.pack();
+            dXacNhanBanHang.setLocationRelativeTo(null);
+            dXacNhanBanHang.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonThanhToanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -693,12 +898,12 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButtonThanhToan;
     private javax.swing.JButton jButtonThem;
+    private javax.swing.JButton jButtonXoaDong;
     private javax.swing.JComboBox<String> jComboBoxKho;
     private javax.swing.JComboBox<String> jComboBoxNhanVien;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooserNgayLap;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -726,17 +931,17 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinnerSoLuong;
     private javax.swing.JTable jTableSanPham;
     private javax.swing.JTable jTableSpDaChon;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTextField jTextFieldCK;
+    private javax.swing.JTextField jTextFieldDienGiai;
+    private javax.swing.JTextField jTextFieldGhiChu;
+    private javax.swing.JTextField jTextFieldGiamGia;
+    private javax.swing.JTextField jTextFieldGiamGia2;
+    private javax.swing.JTextField jTextFieldSoHD;
+    private javax.swing.JTextField jTextFieldTiLeThue;
+    private javax.swing.JTextField jTextFieldTiLeThue2;
+    private javax.swing.JTextField jTextFieldTienHang;
+    private javax.swing.JTextField jTextFieldTongCong;
+    private javax.swing.JTextField jTextFieldVanChuyen;
     // End of variables declaration//GEN-END:variables
 }

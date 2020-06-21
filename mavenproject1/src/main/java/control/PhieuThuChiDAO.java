@@ -86,6 +86,7 @@ public class PhieuThuChiDAO extends DAO {
                 phieuThuChi.setDienGiai(rs.getString("dienGiai"));
                 phieuThuChi.setNgayLap(rs.getString("ngayLap"));
                 phieuThuChi.setTenDoiTuong(rs.getString("tenDoiTuong"));
+                phieuThuChi.setSoPhieu(rs.getString("soPhieu"));
                 phieuThuChi.setLyDo(rs.getString("lyDo"));
                 NhanVien nv = new NhanVien();
                 nv.setId(rs.getInt("idNhanVien"));
