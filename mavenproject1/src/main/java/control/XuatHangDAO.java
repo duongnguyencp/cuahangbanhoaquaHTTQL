@@ -24,7 +24,46 @@ public class XuatHangDAO extends DAO {
     public XuatHangDAO() {
         super();
     }
-
+    
+    public ArrayList<RecordSanPham> loadSanPhamXuatKho(Kho kho){
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "   select * from [CuaHangHoaQua].[dbo].[SanPham] sp inner join   [CuaHangHoaQua].[dbo].[BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n" +
+"               inner join  [CuaHangHoaQua].[dbo].[BienLaiXuat] blx on sp.idBienLaiKho=blx.idBienLaiKho inner join [CuaHangHoaQua].[dbo].[MatHang] mh on sp.idMatHang=mh.idMatHang where idKho="+kho.getId();
+        ArrayList<RecordSanPham> listSanPhamDX = new ArrayList<RecordSanPham>();
+        try {
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                SanPham sp = new SanPham();
+                sp.setMaSp(rs.getString("maSp"));
+                sp.setIdSanPham(rs.getInt("idSanPham"));
+                sp.setTenMatHang(rs.getString("tenMatHang"));
+                sp.setMaMatHang(rs.getString("maMatHang"));
+                sp.setGia(rs.getInt("gia"));
+                sp.setHanSuDung(rs.getString("hanSuDung"));
+                sp.setIdMatHang(rs.getInt("idMatHang"));
+                BienLaiKho blk = new BienLaiKho();
+                blk.setId(rs.getInt("idBienLaiKho"));
+                sp.setBienLaiKho(blk);
+                int soLuong = rs.getInt("soLuong");
+                sp.setDonViTinh(rs.getString("donVi"));
+                RecordSanPham recordSanPham = new RecordSanPham();
+                recordSanPham.setPham(sp);
+                recordSanPham.setSoLuong(soLuong);
+                listSanPhamDX.add(recordSanPham);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stm.close();
+                con.close();
+            } catch (SQLException ex) {
+            }
+        }
+        return listSanPhamDX;
+    }
 //    public BienLaiNhap loadBienLaiNhapTheoKho(SanPham sp) {
 //        PreparedStatement stm = null;
 //        ResultSet rs = null;

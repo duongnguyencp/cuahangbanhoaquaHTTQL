@@ -32,13 +32,13 @@ public class CongNoDAO extends DAO {
             rs = stm.executeQuery();
             while (rs.next()) {
                 CongNo cn = new CongNo();
-                cn.setIdCongNo(rs.getInt(1));
-                cn.setMaSoThue(rs.getString(2));
-                cn.setSoTienNo(rs.getInt(3));
+                cn.setIdCongNo(rs.getInt("idCongNo"));
+                cn.setMaSoThue(rs.getString("maSoThue"));
+                cn.setSoTienNo(rs.getInt("soTienNo"));
                 NhaCungCap cap = new NhaCungCap();
-                cap.setId((rs.getInt(4)));
+                cap.setId((rs.getInt("idNhaCungCap")));
                 PhieuThuChi chi = new PhieuThuChi();
-                chi.setIdPhieuThuChi(rs.getInt(5));
+                chi.setIdPhieuThuChi(rs.getInt("idPhieuThuChi"));
                 cn.setPhieuThuChi(chi);
                 cn.setCap(cap);
                 listCongNo.add(cn);

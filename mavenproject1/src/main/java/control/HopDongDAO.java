@@ -27,11 +27,11 @@ public class HopDongDAO extends DAO{
             rs = stm.executeQuery();
             while (rs.next()) {
                 dong.setId(rs.getInt(1));
-                dong.setTenHopDong(rs.getString(2));
-                dong.setNgayKi(rs.getString(3));
-                dong.setDenNGay(rs.getString(4));
+                dong.setTenHopDong(rs.getString("tenHopDong"));
+                dong.setNgayKi(rs.getString("ngayKi"));
+                dong.setDenNGay(rs.getString("denNgay"));
                 NhanVien nv=new NhanVien();
-                nv.setId(rs.getInt(5));
+                nv.setId(rs.getInt("idNhanVien"));
                 dong.setNv(nv);
                 dong.setNcc(cap);
             }

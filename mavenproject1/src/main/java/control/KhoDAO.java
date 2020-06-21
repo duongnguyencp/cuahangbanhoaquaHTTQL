@@ -33,9 +33,9 @@ public class KhoDAO extends DAO{
             while (rs.next()) {
                 Kho kho = new Kho();
                 NhanVien nhanVien=new NhanVien();
-                nhanVien.setIdNhanVien(rs.getInt(2));
-                kho.setId(rs.getInt(1));
-                kho.setDiaChi(rs.getString(3));
+                nhanVien.setIdNhanVien(rs.getInt("idNhanVien"));
+                kho.setId(rs.getInt("idKho"));
+                kho.setDiaChi(rs.getString("diaChi"));
                 kho.setNv(nhanVien);
                 listKho.add(kho);
             }

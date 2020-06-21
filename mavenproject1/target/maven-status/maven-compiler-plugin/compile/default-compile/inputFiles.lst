@@ -10,6 +10,7 @@ C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordCongNo.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\Nguoi.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BoPhan.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\ChiNhanh.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordSanPham2.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\MatHangDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\XuatHangDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BienLaiKho.java
@@ -43,6 +44,7 @@ C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\Loading.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\jasper.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDNhapMatHangFrm.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\DAO.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDQLPhieuThuChi.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordBienLaiXuat.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\HikariWorkerThread.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BienLaiNhap.java

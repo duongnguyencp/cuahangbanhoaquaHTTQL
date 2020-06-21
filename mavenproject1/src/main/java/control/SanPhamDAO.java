@@ -31,17 +31,17 @@ public class SanPhamDAO extends DAO{
             rs = stm.executeQuery();
             while (rs.next()) {
                 SanPham sp = new SanPham();
-                sp.setIdMatHang(rs.getInt(6));
-                sp.setMaMatHang(rs.getString(7));
-                sp.setTenMatHang(rs.getString(8));
-                sp.setMoTa(rs.getString(9));
-                sp.setIdSanPham(rs.getInt(1));
-                sp.setGia(rs.getInt(3));
-                sp.setHanSuDung(rs.getString(4));
+                sp.setIdMatHang(rs.getInt("idMatHang"));
+                sp.setMaMatHang(rs.getString("maMatHang"));
+                sp.setTenMatHang(rs.getString("tenMatHang"));
+                sp.setMoTa(rs.getString("moTa"));
+                sp.setIdSanPham(rs.getInt("idSanPham"));
+                sp.setGia(rs.getInt("gia"));
+                sp.setHanSuDung(rs.getString("hanSuDung"));
                 MatHang hang=new MatHang();
-                hang.setIdMatHang(rs.getInt(5));
+                hang.setIdMatHang(rs.getInt("idMatHang"));
                 BienLaiKho bienLaiKho=new BienLaiKho();
-                bienLaiKho.setId(rs.getInt(6));
+                bienLaiKho.setId(rs.getInt("idBienLaiKho"));
                 sp.setBienLaiKho(bienLaiKho);
                 listSanPham.add(sp);
             }

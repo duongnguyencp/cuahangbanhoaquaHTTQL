@@ -5,6 +5,7 @@ model\CongNo.class
 control\CongTyDAO.class
 view\GDXacNhanNhapHang$4.class
 model\Kho.class
+view\GDQLPhieuThuChi.class
 view\GDCongNoFrm$2.class
 view\GDXuatHangFrm$16.class
 view\GDNhapMatHangFrm$9.class
@@ -35,15 +36,17 @@ view\GDNhapHangFrm$11.class
 view\GDXacNhanNhapHang$2.class
 view\GDNhapHangFrm$7.class
 control\BienLaiKhoDAO.class
+model\RecordSanPham2.class
 view\GDNhapMatHangFrm$4.class
 view\GDXuatHangFrm$14.class
 view\GDNhapHangFrm$15.class
 control\NhanVienDAO.class
 view\GDCongNoFrm$5.class
+view\GDQLPhieuThuChi$3.class
 view\NewJFrame.class
-.netbeans_automatic_build
 view\GDXuatHangFrm$6.class
 view\GDNhapHangFrm$10.class
+view\GDQLPhieuThuChi$2.class
 view\GDXacNhanNhapHang$3.class
 view\NewJFrame$3.class
 model\RecordCongNoNCC.class
@@ -65,6 +68,7 @@ view\GDNhapHangFrm$2.class
 view\GDXuatHangFrm$12.class
 view\NewJFrame$2.class
 control\BoPhanDAO.class
+view\GDQLPhieuThuChi$1.class
 model\CongTy.class
 view\GDXuatHangFrm$4.class
 control\CongNoDAO.class
@@ -103,6 +107,7 @@ model\RecordChiTietCongNo.class
 view\GDNhapHangFrm$4.class
 view\jasper$1.class
 model\BienLaiNhap.class
+view\GDQLPhieuThuChi$VisitorRenderer.class
 model\SanPham.class
 control\BienLaiNhapDAO.class
 view\GDXuatHangFrm$3.class
@@ -116,6 +121,7 @@ view\GDTaoPhieuThuChi$5.class
 view\GDCongNoFrm$VisitorRenderer.class
 model\PhieuThuChi.class
 view\GDTaoPhieuThuChi.class
+view\GDCongNoFrm$9.class
 model\NhaCungCap.class
 view\GDCongNoFrm.class
 control\HikariCPDataSource.class
