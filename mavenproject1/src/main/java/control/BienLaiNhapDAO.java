@@ -67,6 +67,88 @@ public class BienLaiNhapDAO extends DAO {
         return listBienLaiNhap;
     }
 
+    public boolean themBienLaiNhapPhieuThuChi(BienLaiNhap bienLaiNhap, SanPham pham) {
+        System.out.println(con);
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String idBienLaiNhap = "'" + bienLaiNhap.getIdBienLaiNhap() + "',";
+        String idBienLaiKho;
+        String idHopDong = "'" + bienLaiNhap.getHopDong().getId() + "',";
+        String idNhanVien = "'" + bienLaiNhap.getNhanVien().getIdNhanVien() + "'";
+        String idPhieuThuChi = "'" + bienLaiNhap.getPhieuThuChi().getIdPhieuThuChi() + "',";
+        String maBienLaiKho = "N'" + bienLaiNhap.getMaBienLai() + "',";
+        String ngayLap = "N'" + bienLaiNhap.getNgayLap() + "',";
+        String soLuong = "N'" + bienLaiNhap.getSoLuong() + "',";
+        String idKho = "N'" + bienLaiNhap.getKho().getId() + "',";
+        String tongTien = "N'" + bienLaiNhap.getTongCong() + "'";
+        ////////////////////////--------SanPham
+        String idSanPham = "'" + pham.getGia() + "',";
+        String maSanPham = "'" + pham.getMaSp() + "',";
+        String hanSuDung = "'" + pham.getHanSuDung() + "',";
+        String idMatHang = "'" + pham.getIdMatHang() + "'";
+        String gia = "'" + pham.getGia() + "',";
+        System.out.println("BienLaiNhapDAO " + pham.getIdMatHang());
+        ////////////// // //
+        try {
+            String sql2 = "insert into [CuaHangHoaQua].[dbo].[BienLaiKho] (maBienLaiKho,ngayLap,idKho,soLuong,tongCong)"
+                    + " values(" + maBienLaiKho + ngayLap + idKho + soLuong + tongTien + ")";
+            con.setAutoCommit(false);
+            stm = con.prepareStatement(sql2);
+            stm.executeUpdate();
+            con.commit();
+            String sql3 = "select max(idBienLaiKho) as idBienLaiKho from [CuaHangHoaQua].[dbo].[BienLaiKho]";
+            stm = con.prepareStatement(sql3);
+            rs = stm.executeQuery();
+            int maxId = 0;
+            while (rs.next()) {
+                maxId = rs.getInt("idBienLaiKho");
+            }// tim max biên lai kho
+            maSanPham = "'" + (pham.getMaSp() + "" + maxId) + "',";
+            idBienLaiKho = "'" + (maxId) + "',";
+            sql3 = "select max(idPhieuThuChi) as idPhieuThuChi from [CuaHangHoaQua].[dbo].[PhieuThuChi]";
+            stm = con.prepareStatement(sql3);
+            rs = stm.executeQuery();
+            maxId = 0;
+            while (rs.next()) {
+                maxId = rs.getInt("idPhieuThuChi");
+            }
+            idPhieuThuChi = "'" + (maxId) + "',";
+            sql3 = "insert into [CuaHangHoaQua].[dbo].[SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
+                    + " values(" + idBienLaiKho + maSanPham + gia + hanSuDung + idMatHang + ")";
+            String sql = "insert into [CuaHangHoaQua].[dbo].[BienLaiNhap] (idBienLaiKho,idHopDong,idPhieuThuChi,idNhanVien)"
+                    + " values(" + idBienLaiKho + idHopDong + idPhieuThuChi + idNhanVien + ")";
+            System.out.println(sql);
+            stm = con.prepareStatement(sql3);
+            stm.executeUpdate();
+            con.commit();
+            stm = con.prepareStatement(sql);
+            stm.executeUpdate();
+            con.commit();
+            con.close();
+            stm.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                if (con != null) {
+                    con.rollback();
+                    System.out.println("roll back...BienLaiNhapDAO");
+                }
+            } catch (SQLException ex2) {
+                ex2.printStackTrace();
+            }
+            return false;
+        } finally {
+            try {
+                stm.close();
+                con.close();
+            } catch (SQLException ex3) {
+                //
+                ex3.printStackTrace();
+            }
+        }
+        return true;
+    }
+
     public boolean themBienLaiNhapCongNo(BienLaiNhap bienLaiNhap, SanPham pham) {
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -106,7 +188,7 @@ public class BienLaiNhapDAO extends DAO {
             }
             maSanPham = "'" + (pham.getMaSp() + "" + maxId) + "',";
             idBienLaiKho = "'" + (maxId) + "',";
-            System.out.println("maxID"+(maxId));
+            System.out.println("maxID" + (maxId));
             sql3 = "insert into [CuaHangHoaQua].[dbo].[SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
                     + " values(" + idBienLaiKho + maSanPham + gia + hanSuDung + idMatHang + ")";
             String sql = "insert into [CuaHangHoaQua].[dbo].[BienLaiNhap] (idBienLaiKho,idHopDong,idNhanVien)"

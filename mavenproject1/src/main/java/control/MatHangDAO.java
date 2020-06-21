@@ -65,7 +65,6 @@ public class MatHangDAO extends DAO {
             stm = con.prepareStatement(sql);
             stm.executeUpdate();
             con.commit();
-            con.rollback();
             con.close();
             stm.close();
         } catch (Exception e) {

@@ -8,12 +8,7 @@ package view;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import control.BienLaiKhoDAO;
-import control.KhoDAO;
-import control.MatHangDAO;
-import control.NhaCungCapDAO;
-import control.NhanVienDAO;
-import control.SanPhamDAO;
+import control.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -125,7 +120,6 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
             public void focusGained(FocusEvent e) {
                 field.setText("");
             }
-
             @Override
             public void focusLost(FocusEvent e) {
                 try {
@@ -250,6 +244,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         for (int i = 0; i < listKho.size(); i++) {
             model.addElement("Kho ở " + listKho.get(i).getDiaChi());
         }
+        
         jComboBoxKho.setModel(model);
         jComboBoxKho.addItemListener(new ItemListener() {
             @Override
@@ -303,12 +298,12 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jDateChooserNgayLap = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jTextFieldGhiChu = new javax.swing.JTextField();
         jTextFieldMaBienLai = new javax.swing.JTextField();
         jComboBoxKho = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldLyDo = new javax.swing.JTextField();
         jComboBoxNhanVien = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jComboBoxNcc = new javax.swing.JComboBox<>();
@@ -422,8 +417,8 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBoxNcc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField2)
+                    .addComponent(jTextFieldGhiChu)
+                    .addComponent(jTextFieldLyDo)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jComboBoxKho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
@@ -461,15 +456,15 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldLyDo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldGhiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBoxKho, jComboBoxNcc, jComboBoxNhanVien, jDateChooserNgayLap, jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jTextField2, jTextField3, jTextFieldMaBienLai});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBoxKho, jComboBoxNcc, jComboBoxNhanVien, jDateChooserNgayLap, jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jTextFieldGhiChu, jTextFieldLyDo, jTextFieldMaBienLai});
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Tổng cộng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12))); // NOI18N
 
@@ -1035,7 +1030,6 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
     private void jButtonTaoMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTaoMoiActionPerformed
         GDNhapMatHangFrm dNhapMatHangFrm = new GDNhapMatHangFrm();
         dNhapMatHangFrm.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
         dNhapMatHangFrm.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 JFrame frame = (JFrame) e.getSource();
@@ -1185,8 +1179,9 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         System.out.println(nccSelected.getTen() + " ten ncc da chon");
         System.out.println(nvSelected.getHoTen() + " ten nvSelected da chon");
         System.out.println(khoSelected.getDiaChi() + " ten khoSelected da chon");
-
-        GDXacNhanNhapHang dXacNhanNhapHang = new GDXacNhanNhapHang(listMatHangDaChon, nccSelected, nvSelected, ngayNhap, khoSelected,this.maBienLai);
+        String dienGiai=jTextFieldLyDo.getText();
+        String ghiChu=jTextFieldGhiChu.getText();
+        GDXacNhanNhapHang dXacNhanNhapHang = new GDXacNhanNhapHang(listMatHangDaChon, nccSelected, nvSelected, ngayNhap, khoSelected,this.maBienLai,dienGiai,ghiChu );
         dXacNhanNhapHang.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         dXacNhanNhapHang.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -1318,13 +1313,13 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField20;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextFieldDonGia;
+    private javax.swing.JTextField jTextFieldGhiChu;
+    private javax.swing.JTextField jTextFieldLyDo;
     private javax.swing.JTextField jTextFieldMaBienLai;
     private javax.swing.JTextField jTextFieldTimKiem;
     // End of variables declaration//GEN-END:variables

@@ -45,21 +45,26 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
     private String ngayLap;
     private Kho kho;
     private String maBienLai;
+    private String ghiChu;
+    private String dienGiai;
+
     public GDXacNhanNhapHang() {
         initComponents();
     }
 
-    public GDXacNhanNhapHang(Map<SanPham, Integer> listMatHangDaChon, NhaCungCap ncc, NhanVien nv, String ngayLap, Kho kho,String maBienLai) {
+    public GDXacNhanNhapHang(Map<SanPham, Integer> listMatHangDaChon, NhaCungCap ncc, NhanVien nv, String ngayLap, Kho kho, String maBienLai, String dienGiai, String ghiChu) {
         initComponents();
         this.listMatHangDaChon = listMatHangDaChon;
         tinhTongTien();
         addListenerText(jTextFieldThanhToan);
         this.ncc = ncc;
-        System.out.println("chuyen ncc chuyen sang  xac nhan"+ncc.getTen());
+        System.out.println("chuyen ncc chuyen sang  xac nhan" + ncc.getTen());
         this.nv = nv;
         this.ngayLap = ngayLap;
         this.kho = kho;
-        this.maBienLai=maBienLai;
+        this.maBienLai = maBienLai;
+        this.dienGiai = dienGiai;
+        this.ghiChu = ghiChu;
     }
 
     String dinhDangTien(long number) {
@@ -167,7 +172,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
         jTextFieldTraLai = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButtonDongBillNotIn = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBoxHinhThucTra = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jCheckBoxNoNCC = new javax.swing.JCheckBox();
 
@@ -224,8 +229,8 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt", "Chuyển khoản", "Quẹt thẻ" }));
+        jComboBoxHinhThucTra.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jComboBoxHinhThucTra.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt", "Chuyển khoản", "Quẹt thẻ" }));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Hình thức trả");
@@ -256,7 +261,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxHinhThucTra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextFieldThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                                 .addComponent(jTextFieldTongTien)
@@ -281,7 +286,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
                     .addComponent(jTextFieldTraLai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxHinhThucTra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -294,9 +299,32 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    int countDigit(int number) {
+        int count = 0;
+        while (number > 0) {
+            number /= 10;
+            count += 1;
+        }
+        return count;
+    }
+    private String maCongNO; 
+    public void createMatCN() {
+        CongNoDAO aO = new CongNoDAO();
+        ArrayList<CongNo> listCongNo = aO.getAllCongNo();
+        int count = countDigit(listCongNo.size() + 1);
+         this.maCongNO = "CN-";
+        int rest = 7 - count;
+        while (rest > 0) {
+            maCongNO += '0';
+            rest--;
+        }
+        this.maCongNO = this.maCongNO + "" + listCongNo.size();
+    }
+   
     private void jButtonDongBillNotInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDongBillNotInActionPerformed
+
         if (jCheckBoxNoNCC.isSelected()) {
+            
             HopDongDAO aO = new HopDongDAO();
             HopDong dong = aO.getHopDongByNcc(ncc);
             ArrayList<BienLaiNhap> listBienLaiNhap = new ArrayList<>();
@@ -315,15 +343,57 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
                 bienLaiNhapDAO.themBienLaiNhapCongNo(bienLaiNhap, key);
 
             }
+            PhieuThuChi phieuThuChi = new PhieuThuChi();
+            PhieuThuChiDAO phieuThuChiDAO = new PhieuThuChiDAO();
+            phieuThuChi.setChuyenKhoan(jComboBoxHinhThucTra.getSelectedItem().toString());
+            phieuThuChi.setLoaiPhieu("Phiếu chi công nợ");
+            phieuThuChi.setTenDoiTuong(ncc.getTen());
+            phieuThuChi.setNv(nv);
+            phieuThuChi.setSoTien(0);
+            phieuThuChi.setLyDo(ghiChu);
+            phieuThuChi.setDienGiai(dienGiai);
+            phieuThuChi.setSoPhieu(this.maBienLai);
+            phieuThuChi.setNgayLap(ngayLap);
+            phieuThuChiDAO.themPhieuThuChi(phieuThuChi);
+            
             CongNo cn = new CongNo();
             CongNoDAO congNoDao = new CongNoDAO();
             cn.setCap(ncc);
-            cn.setMaSoThue("CN000" + listBienLaiNhap.size() + tongTien);
+            cn.setMaSoThue(this.maCongNO);
             cn.setSoTienNo(tongTien);
             congNoDao.themCongNo(cn);
-        }
-        else {
-            
+        } else {
+
+            PhieuThuChi phieuThuChi = new PhieuThuChi();
+            PhieuThuChiDAO phieuThuChiDAO = new PhieuThuChiDAO();
+            phieuThuChi.setChuyenKhoan(jComboBoxHinhThucTra.getSelectedItem().toString());
+            phieuThuChi.setLoaiPhieu("Phiếu chi nhập hàng");
+            phieuThuChi.setTenDoiTuong(ncc.getTen());
+            phieuThuChi.setNv(nv);
+            phieuThuChi.setSoTien(tongTien);
+            phieuThuChi.setLyDo(ghiChu);
+            phieuThuChi.setDienGiai(dienGiai);
+            phieuThuChi.setSoPhieu(this.maBienLai);
+            phieuThuChi.setNgayLap(ngayLap);
+            phieuThuChiDAO.themPhieuThuChi(phieuThuChi);
+            HopDongDAO aO = new HopDongDAO();
+            HopDong dong = aO.getHopDongByNcc(ncc);
+            ArrayList<BienLaiNhap> listBienLaiNhap = new ArrayList<>();
+            for (Map.Entry<SanPham, Integer> entry : listMatHangDaChon.entrySet()) {
+                BienLaiNhapDAO bienLaiNhapDAO = new BienLaiNhapDAO();
+                SanPham key = entry.getKey();
+                Integer value = entry.getValue();
+                BienLaiNhap bienLaiNhap = new BienLaiNhap();
+                bienLaiNhap.setMaBienLai(this.maBienLai);
+                bienLaiNhap.setHopDong(dong);
+                bienLaiNhap.setNhanVien(nv);
+                bienLaiNhap.setKho(kho);
+                bienLaiNhap.setNgayLap(ngayLap);
+                bienLaiNhap.setSoLuong(value.intValue());
+                bienLaiNhap.setTongCong(tongTien);
+                bienLaiNhap.setPhieuThuChi(phieuThuChi);
+                bienLaiNhapDAO.themBienLaiNhapPhieuThuChi(bienLaiNhap, key);
+            }
         }
         ImageIcon icon = new ImageIcon(getClass().getResource("/imgCuaHangBanHoaQua/icons8_ok_48px.png"));
         JOptionPane.showMessageDialog(null, "Đã hoàn tất nhập hàng", "Nhập hàng thành công", JOptionPane.INFORMATION_MESSAGE, icon);
@@ -369,7 +439,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDongBillNotIn;
     private javax.swing.JCheckBox jCheckBoxNoNCC;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBoxHinhThucTra;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

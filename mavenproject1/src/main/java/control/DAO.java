@@ -17,9 +17,6 @@ public class DAO {
 
     public DAO() {
         
-            String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=CuaHangHoaQua";
-            String user = "sa";
-            String pass = "123";
             try {
 //                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 //                con = DriverManager.getConnection(dbURL, user, pass);

@@ -73,7 +73,6 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         loadThemMatHangDaChon();
         createMatBienLai();
     }
-
     int countDigit(int number) {
         int count = 0;
         while (number > 0) {

@@ -20,7 +20,7 @@ public class NhaCungCapDAO extends DAO {
     public NhaCungCapDAO() {
         super();
     }
-
+   
     public ArrayList<NhaCungCap> getAllNhaCungCap() {
         PreparedStatement stm = null;
         ResultSet rs = null;
