@@ -5,14 +5,15 @@ C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\NewJFrame.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\ChiNhanhDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\MatHang.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\NhanVienDAO.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDTonQuy.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDTaoPhieuThuChi.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordCongNo.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\Nguoi.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BoPhan.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\ChiNhanh.java
-C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordSanPham2.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\MatHangDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\XuatHangDAO.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\view\GDXacNhanBanHang.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\BienLaiKho.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\NhaCungCap.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\CuaHangDAO.java
@@ -37,6 +38,7 @@ C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\SanPham.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\CongTyDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\HopDong.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordChiTietCongNo.java
+C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\DataBean.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\CuaHang.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\control\KhoDAO.java
 C:\Users\AD\Desktop\btlHTTQL\mavenproject1\src\main\java\model\RecordSanPham.java

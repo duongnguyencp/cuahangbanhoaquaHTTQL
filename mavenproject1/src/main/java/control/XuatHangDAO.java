@@ -123,7 +123,6 @@ public class XuatHangDAO extends DAO {
         ResultSet rs = null;
         String sql = "  select sp.maSp, sp.idSanPham,mh.tenMatHang,mh.maMatHang, sp.gia,sp.hanSuDung,sp.idMatHang,blk.idBienLaiKho,blk.soLuong,mh.donVi from [CuaHangHoaQua].[dbo].[SanPham] sp inner join   [CuaHangHoaQua].[dbo].[BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
                 + "  inner join  [CuaHangHoaQua].[dbo].[BienLaiNhap] bln on sp.idBienLaiKho=bln.idBienLaiKho inner join [CuaHangHoaQua].[dbo].[MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
-        System.out.println(sql);
         ArrayList<RecordSanPham> listMHTrongKho = new ArrayList<RecordSanPham>();
         try {
             stm = con.prepareStatement(sql);

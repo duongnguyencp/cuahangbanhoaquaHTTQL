@@ -34,7 +34,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
     /**
      * Creates new form GDXacNhanNhapHang
      */
-    private Map<SanPham, Integer> listMatHangDaChon = new HashMap<SanPham, Integer>();
+    private ArrayList<RecordSanPham> listMatHangDaChon = new ArrayList();
     int tongTien = 0;
     int tongSoLuong = 0;
     long thanhToan = 0;
@@ -52,7 +52,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
         initComponents();
     }
 
-    public GDXacNhanNhapHang(Map<SanPham, Integer> listMatHangDaChon, NhaCungCap ncc, NhanVien nv, String ngayLap, Kho kho, String maBienLai, String dienGiai, String ghiChu) {
+    public GDXacNhanNhapHang(ArrayList<RecordSanPham> listMatHangDaChon, NhaCungCap ncc, NhanVien nv, String ngayLap, Kho kho, String maBienLai, String dienGiai, String ghiChu) {
         initComponents();
         this.listMatHangDaChon = listMatHangDaChon;
         tinhTongTien();
@@ -74,18 +74,18 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
     }
 
     void tinhTongTien() {
-        Iterator it = listMatHangDaChon.entrySet().iterator();
         tongTien = 0;
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            SanPham pham = (SanPham) pair.getKey();
-            Integer soluong = (Integer) pair.getValue();
+        for (int i = 0; i < listMatHangDaChon.size(); i++) {
+            RecordSanPham recordSanPham = listMatHangDaChon.get(i);
+            SanPham pham = recordSanPham.getPham();
+            int soLuong = recordSanPham.getSoLuong();
+            int sl = recordSanPham.getSoLuong();
             String maMH = pham.getMaMatHang();
             String tenM = pham.getTenMatHang();
             String hsd = pham.getHanSuDung();
             String dvt = pham.getDonViTinh();
             int gia = pham.getGia();
-            tongTien += gia * soluong.intValue();
+            tongTien += gia * soLuong;
         }
         jTextFieldTongTien.setText(dinhDangTien(tongTien));
     }
@@ -307,12 +307,13 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
         }
         return count;
     }
-    private String maCongNO; 
+    private String maCongNO;
+
     public void createMatCN() {
         CongNoDAO aO = new CongNoDAO();
         ArrayList<CongNo> listCongNo = aO.getAllCongNo();
         int count = countDigit(listCongNo.size() + 1);
-         this.maCongNO = "CN-";
+        this.maCongNO = "CN-";
         int rest = 7 - count;
         while (rest > 0) {
             maCongNO += '0';
@@ -320,29 +321,30 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
         }
         this.maCongNO = this.maCongNO + "" + listCongNo.size();
     }
-   
+
     private void jButtonDongBillNotInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDongBillNotInActionPerformed
 
         if (jCheckBoxNoNCC.isSelected()) {
-            
+
             HopDongDAO aO = new HopDongDAO();
             HopDong dong = aO.getHopDongByNcc(ncc);
             ArrayList<BienLaiNhap> listBienLaiNhap = new ArrayList<>();
-            for (Map.Entry<SanPham, Integer> entry : listMatHangDaChon.entrySet()) {
-                BienLaiNhapDAO bienLaiNhapDAO = new BienLaiNhapDAO();
-                SanPham key = entry.getKey();
-                Integer value = entry.getValue();
+            BienLaiNhapDAO bienLaiNhapDAO = new BienLaiNhapDAO();
+            for (int i = 0; i < listMatHangDaChon.size(); i++) {
+                RecordSanPham recordSanPham = listMatHangDaChon.get(i);
+                SanPham sp = recordSanPham.getPham();
+                int soLuong = recordSanPham.getSoLuong();
                 BienLaiNhap bienLaiNhap = new BienLaiNhap();
                 bienLaiNhap.setMaBienLai(this.maBienLai);
                 bienLaiNhap.setHopDong(dong);
                 bienLaiNhap.setNhanVien(nv);
                 bienLaiNhap.setKho(kho);
                 bienLaiNhap.setNgayLap(ngayLap);
-                bienLaiNhap.setSoLuong(value.intValue());
+                bienLaiNhap.setSoLuong(soLuong);
                 bienLaiNhap.setTongCong(tongTien);
-                bienLaiNhapDAO.themBienLaiNhapCongNo(bienLaiNhap, key);
-
+                bienLaiNhapDAO.themBienLaiNhapCongNo(bienLaiNhap, sp);
             }
+
             PhieuThuChi phieuThuChi = new PhieuThuChi();
             PhieuThuChiDAO phieuThuChiDAO = new PhieuThuChiDAO();
             phieuThuChi.setChuyenKhoan(jComboBoxHinhThucTra.getSelectedItem().toString());
@@ -355,7 +357,7 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
             phieuThuChi.setSoPhieu(this.maBienLai);
             phieuThuChi.setNgayLap(ngayLap);
             phieuThuChiDAO.themPhieuThuChi(phieuThuChi);
-            
+
             CongNo cn = new CongNo();
             CongNoDAO congNoDao = new CongNoDAO();
             cn.setCap(ncc);
@@ -378,22 +380,24 @@ public class GDXacNhanNhapHang extends javax.swing.JFrame {
             phieuThuChiDAO.themPhieuThuChi(phieuThuChi);
             HopDongDAO aO = new HopDongDAO();
             HopDong dong = aO.getHopDongByNcc(ncc);
+            BienLaiNhapDAO bienLaiNhapDAO = new BienLaiNhapDAO();
             ArrayList<BienLaiNhap> listBienLaiNhap = new ArrayList<>();
-            for (Map.Entry<SanPham, Integer> entry : listMatHangDaChon.entrySet()) {
-                BienLaiNhapDAO bienLaiNhapDAO = new BienLaiNhapDAO();
-                SanPham key = entry.getKey();
-                Integer value = entry.getValue();
+            for (int i = 0; i < listMatHangDaChon.size(); i++) {
+                RecordSanPham recordSanPham = listMatHangDaChon.get(i);
+                SanPham sp = recordSanPham.getPham();
+                int soLuong = recordSanPham.getSoLuong();
                 BienLaiNhap bienLaiNhap = new BienLaiNhap();
                 bienLaiNhap.setMaBienLai(this.maBienLai);
                 bienLaiNhap.setHopDong(dong);
                 bienLaiNhap.setNhanVien(nv);
                 bienLaiNhap.setKho(kho);
                 bienLaiNhap.setNgayLap(ngayLap);
-                bienLaiNhap.setSoLuong(value.intValue());
+                bienLaiNhap.setSoLuong(soLuong);
                 bienLaiNhap.setTongCong(tongTien);
                 bienLaiNhap.setPhieuThuChi(phieuThuChi);
-                bienLaiNhapDAO.themBienLaiNhapPhieuThuChi(bienLaiNhap, key);
+                bienLaiNhapDAO.themBienLaiNhapPhieuThuChi(bienLaiNhap, sp);
             }
+
         }
         ImageIcon icon = new ImageIcon(getClass().getResource("/imgCuaHangBanHoaQua/icons8_ok_48px.png"));
         JOptionPane.showMessageDialog(null, "Đã hoàn tất nhập hàng", "Nhập hàng thành công", JOptionPane.INFORMATION_MESSAGE, icon);

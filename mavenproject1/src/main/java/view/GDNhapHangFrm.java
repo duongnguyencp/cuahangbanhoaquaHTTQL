@@ -54,7 +54,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
     private ArrayList<MatHang> listMatHang;
     private ArrayList<MatHang> listMatHangSearch = new ArrayList<>();
     private int giaMatHang;
-    private Map<SanPham, Integer> listMatHangDaChon = new HashMap<SanPham, Integer>();
+    private ArrayList<RecordSanPham> listMatHangDaChon = new ArrayList<>();
 
     public GDNhapHangFrm() {
         initComponents();
@@ -76,11 +76,12 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         return count;
     }
     private String maBienLai;
+
     void createMatBienLai() {
         BienLaiKhoDAO aO = new BienLaiKhoDAO();
         ArrayList<BienLaiKho> listBienLaiKho = aO.getAllBienLaiKho();
         int count = countDigit(listBienLaiKho.size() + 1);
-         this.maBienLai = "PN-";
+        this.maBienLai = "PN-";
         int rest = 7 - count;
         while (rest > 0) {
             maBienLai += '0';
@@ -120,6 +121,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
             public void focusGained(FocusEvent e) {
                 field.setText("");
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 try {
@@ -244,7 +246,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         for (int i = 0; i < listKho.size(); i++) {
             model.addElement("Kho ở " + listKho.get(i).getDiaChi());
         }
-        
+
         jComboBoxKho.setModel(model);
         jComboBoxKho.addItemListener(new ItemListener() {
             @Override
@@ -1067,22 +1069,19 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         jTableMatHangThem.setRowMargin(3);
         jTableMatHangThem.setRowSelectionAllowed(true);
         jTableMatHangThem.setSelectionForeground(new Color(204, 255, 255));
-
-        Iterator it = listMatHangDaChon.entrySet().iterator();
         int stt = 0;
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            SanPham pham = (SanPham) pair.getKey();
-            Integer soluong = (Integer) pair.getValue();
+        for (int i = 0; i < listMatHangDaChon.size(); i++) {
+            RecordSanPham recordSanPham = listMatHangDaChon.get(i);
+            SanPham pham = recordSanPham.getPham();
+            int soluong = recordSanPham.getSoLuong();
             System.out.println("soluong+tensp" + soluong + " " + pham.getTenMatHang());
             String maMH = pham.getMaMatHang();
             String tenMH = pham.getTenMatHang();
             String hsd = pham.getHanSuDung();
             String dvt = pham.getDonViTinh();
             int gia = pham.getGia();
-            int thanhTien = gia * soluong.intValue();
-
-            defaultTableModel.addRow(new Object[]{stt, maMH, tenMH, hsd, dvt, soluong.intValue(), dinhDangTien(gia), dinhDangTien(thanhTien)});
+            int thanhTien = gia * soluong;
+            defaultTableModel.addRow(new Object[]{stt, maMH, tenMH, hsd, dvt, soluong, dinhDangTien(gia), dinhDangTien(thanhTien)});
             stt++;
         }
         defaultTableModel.fireTableDataChanged();
@@ -1108,7 +1107,12 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
             loadDanhSachMH(listMatHangTmp);
         }
     }//GEN-LAST:event_jButtonTimKiemActionPerformed
-
+    public boolean compareSanPham(SanPham sp1, SanPham sp2) {
+        if (sp1.getIdMatHang()==sp2.getIdMatHang()) {
+            return true;
+        }
+        return false;
+    }
     private void JButtonThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonThemActionPerformed
         String donGia = jTextFieldDonGia.getText();
         boolean check = true;
@@ -1139,11 +1143,26 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         SanPham sp = new SanPham(matHangThem);
         sp.setHanSuDung(hsd);
         sp.setGia(giaMatHang);
-        String maSp="SP";
+        String maSp = "SP";
         sp.setMaSp(maSp);
         System.out.println(sp.toString());
         if (check = true) {
-            listMatHangDaChon.put(sp, soLuong);
+            boolean check2 = false;
+            for (int i = 0; i < listMatHangDaChon.size(); i++) {
+                RecordSanPham recordSanPham =listMatHangDaChon.get(i) ;
+                SanPham pham = recordSanPham.getPham();
+                int soLuong2 = recordSanPham.getSoLuong();
+                if (compareSanPham(pham, sp)) {
+                    check2 = true;
+                    recordSanPham.setSoLuong(soLuong + soLuong2);
+                }
+            }
+            if (check2 == false) {
+                RecordSanPham recordSanPham = new RecordSanPham();
+                recordSanPham.setPham(sp);
+                recordSanPham.setSoLuong(soLuong);
+                listMatHangDaChon.add(recordSanPham);
+            }
             loadThemMatHangDaChon();
         }
     }//GEN-LAST:event_JButtonThemActionPerformed
@@ -1156,20 +1175,20 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         String dvt = jTableMatHangThem.getValueAt(row, 4).toString();
         int soLuong = Integer.parseInt(jTableMatHangThem.getValueAt(row, 5).toString());
         String donGia = jTableMatHangThem.getValueAt(row, 6).toString();
-        Iterator it = listMatHangDaChon.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            SanPham pham = (SanPham) pair.getKey();
-            Integer soluong2 = (Integer) pair.getValue();
+        for (int i = 0; i < listMatHangDaChon.size(); i++) {
+            RecordSanPham recordSanPham = new RecordSanPham();
+            SanPham pham = recordSanPham.getPham();
+            int soluong2 = recordSanPham.getSoLuong();
             String maMH2 = pham.getMaMatHang();
             String tenMH2 = pham.getTenMatHang();
             String hsd2 = pham.getHanSuDung();
             String dvt2 = pham.getDonViTinh();
             int gia2 = pham.getGia();
-            if (ma.equals(maMH2) && tenMH.equals(tenMH2) && hsd.equals(hsd2) && soLuong == soluong2.intValue() && row != -1) {
-                int t = listMatHangDaChon.remove(pham);
+            if (ma.equals(maMH2) && tenMH.equals(tenMH2) && hsd.equals(hsd2) && soLuong == soluong2 && row != -1) {
+                 listMatHangDaChon.remove(i);
                 break;
             }
+
         }
         loadThemMatHangDaChon();
     }//GEN-LAST:event_jButtonXoaDongActionPerformed
@@ -1179,9 +1198,9 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         System.out.println(nccSelected.getTen() + " ten ncc da chon");
         System.out.println(nvSelected.getHoTen() + " ten nvSelected da chon");
         System.out.println(khoSelected.getDiaChi() + " ten khoSelected da chon");
-        String dienGiai=jTextFieldLyDo.getText();
-        String ghiChu=jTextFieldGhiChu.getText();
-        GDXacNhanNhapHang dXacNhanNhapHang = new GDXacNhanNhapHang(listMatHangDaChon, nccSelected, nvSelected, ngayNhap, khoSelected,this.maBienLai,dienGiai,ghiChu );
+        String dienGiai = jTextFieldLyDo.getText();
+        String ghiChu = jTextFieldGhiChu.getText();
+        GDXacNhanNhapHang dXacNhanNhapHang = new GDXacNhanNhapHang(listMatHangDaChon, nccSelected, nvSelected, ngayNhap, khoSelected, this.maBienLai, dienGiai, ghiChu);
         dXacNhanNhapHang.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         dXacNhanNhapHang.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

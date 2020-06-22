@@ -5,6 +5,35 @@
  */
 package view;
 
+import control.MatHangDAO;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import model.*;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRSaver;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import net.sf.jasperreports.view.JasperViewer;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+import static org.quartz.JobBuilder.*;
+import static org.quartz.SimpleScheduleBuilder.*;
+import static org.quartz.CronScheduleBuilder.*;
+import static org.quartz.CalendarIntervalScheduleBuilder.*;
+import static org.quartz.TriggerBuilder.*;
+import static org.quartz.DateBuilder.*;
+
 /**
  *
  * @author Duong
@@ -14,8 +43,41 @@ public class jasper extends javax.swing.JFrame {
     /**
      * Creates new form jasper
      */
+    public class SimpleJob implements Job {
+
+        @Override
+        public void execute(JobExecutionContext arg0) throws JobExecutionException {
+            System.out.println("This is a quartz job!");
+            System.out.println(new Date());
+        }
+    }
+
     public jasper() {
         initComponents();
+        try {
+            SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
+
+            Scheduler sched = schedFact.getScheduler();
+
+            sched.start();
+            JobDetail job = newJob(SimpleJob.class)
+                    .withIdentity("myJob", "group1") // name "myJob", group "group1"
+                    .build();
+            // Trigger the job to run now, and then every 40 seconds
+            Trigger trigger = newTrigger()
+                    .withIdentity("myTrigger", "group1")
+                    .startNow()
+                    .withSchedule(simpleSchedule()
+                            .withIntervalInSeconds(1)
+                            .repeatForever())
+                    .build();
+
+            // Tell quartz to schedule the job using our trigger
+            sched.scheduleJob(job, trigger);
+        } catch (Exception e) {
+        }
+
+        // define the job and tie it to our HelloJob class
     }
 
     /**
@@ -73,6 +135,11 @@ public class jasper extends javax.swing.JFrame {
         jLabel1.setText("Username");
 
         jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextField2.setText("jTextField2");
 
@@ -152,7 +219,52 @@ public class jasper extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            String sourceName = getClass().getResource("/report/report2.jasper").toString();
+            sourceName = sourceName.substring(6, sourceName.length());
+            System.out.println(sourceName);
+            ArrayList<DataBean> dataBeanList = new ArrayList<DataBean>();
+            dataBeanList.add(new DataBean("Manisha", "India"));
+            dataBeanList.add(new DataBean("Dennis Ritchie", "USA"));
+            dataBeanList.add(new DataBean("V.Anand", "India"));
+            dataBeanList.add(new DataBean("Shrinath", "California"));
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dataBeanList);
+            Map parameters = new HashMap();
+            try {
+                JasperPrint jasperPrint = JasperFillManager.fillReport(
+                        sourceName, parameters, dataSource);
+                JasperViewer.viewReport(jasperPrint);
+//                JRPdfExporter exporter = new JRPdfExporter();
+//                exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+//                exporter.setExporterOutput(
+//                        new SimpleOutputStreamExporterOutput(getClass().getResource("/report/export.pdf").toString()));
+//                SimplePdfReportConfiguration reportConfig
+//                        = new SimplePdfReportConfiguration();
+//                reportConfig.setSizePageToContent(true);
+//                reportConfig.setForceLineBreakPolicy(false);
+//                SimplePdfExporterConfiguration exportConfig
+//                        = new SimplePdfExporterConfiguration();
+//                exportConfig.setMetadataAuthor("duong dep zai");
+//                exportConfig.setEncrypted(true);
+//                exportConfig.setAllowedPermissionsHint("PRINTING");
+//
+//                exporter.setConfiguration(reportConfig);
+//                exporter.setConfiguration(exportConfig);
+//
+//                exporter.exportReport();
+            } catch (JRException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
+     * d
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {

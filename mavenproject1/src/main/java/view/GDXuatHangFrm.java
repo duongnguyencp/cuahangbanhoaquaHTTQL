@@ -52,13 +52,16 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.*;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
  * @author Duong
  */
-public class GDXuatHangFrm extends javax.swing.JFrame {
+public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
 
     private Kho khoSelected;
     private ArrayList<Kho> listKho;
@@ -80,8 +83,41 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         addListenerText(jTextFieldTiLeThue);
         loadThemMatHangDaChon();
         createMatBienLai();
+        loadUpdateDB();
 
     }
+
+    @Override
+    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+        loadDanhSachMH();
+        System.out.println("This is a quartz job!" + arg0.getFireTime());
+    }
+
+    void loadUpdateDB() {
+        try {
+            SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
+
+            Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+
+            sched.start();
+            JobDetail job = newJob(GDXuatHangFrm.class)
+                    .withIdentity("job1", "group1") // name "myJob", group "group1"
+                    .build();
+            // Trigger the job to run now, and then every 40 seconds
+            Trigger trigger = newTrigger()
+                    .withIdentity("trigger1", "group1")
+                    .startNow()
+                    .withSchedule(simpleSchedule()
+                            .withIntervalInSeconds(8)
+                            .repeatForever())
+                    .build();
+
+            // Tell quartz to schedule the job using our trigger
+            sched.scheduleJob(job, trigger);
+        } catch (Exception e) {
+        }
+    }
+
     int countDigit(int number) {
         int count = 0;
         while (number > 0) {
