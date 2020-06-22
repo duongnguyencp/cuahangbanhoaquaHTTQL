@@ -1177,6 +1177,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         String donGia = jTableMatHangThem.getValueAt(row, 6).toString();
         for (int i = 0; i < listMatHangDaChon.size(); i++) {
             RecordSanPham recordSanPham = new RecordSanPham();
+            recordSanPham=listMatHangDaChon.get(i);
             SanPham pham = recordSanPham.getPham();
             int soluong2 = recordSanPham.getSoLuong();
             String maMH2 = pham.getMaMatHang();
