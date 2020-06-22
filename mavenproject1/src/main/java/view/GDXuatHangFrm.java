@@ -84,12 +84,40 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
         loadThemMatHangDaChon();
         createMatBienLai();
         loadUpdateDB();
+        jPanelLoading.setVisible(false);
 
     }
 
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
-        loadDanhSachMH();
+        jPanelLoading.setVisible(true);
+        loadDanhSachMH();        
+//        try {
+//            Thread t = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        for (int i = 0; i < 200; i++) {
+//                            int m = jProgressBar1.getMaximum();
+//                            int v = jProgressBar1.getValue();
+//                            if (v < m) {
+//                                jProgressBar1.setValue(jProgressBar1.getValue() + 1);
+//                            } else {
+//                                i = 201;
+//                                jPanelLoading.setVisible(false);
+//                                loadDanhSachMH();
+//                            }
+//                            Thread.sleep(8);
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//            t.start();
+//
+//        } catch (Exception e) {
+//        }
         System.out.println("This is a quartz job!" + arg0.getFireTime());
     }
 
@@ -108,7 +136,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
                     .withIdentity("trigger1", "group1")
                     .startNow()
                     .withSchedule(simpleSchedule()
-                            .withIntervalInSeconds(8)
+                            .withIntervalInSeconds(10)
                             .repeatForever())
                     .build();
 
@@ -406,7 +434,9 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
         jLabel8 = new javax.swing.JLabel();
         jTextField18 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jLabelTest = new javax.swing.JLabel();
+        jPanelLoading = new javax.swing.JPanel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel13 = new javax.swing.JLabel();
 
         jTextField5.setText("jTextField5");
 
@@ -901,7 +931,31 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButton1.setText("Tồn kho");
 
-        jLabelTest.setText("jLabel13");
+        jLabel13.setText("Đang tải...");
+
+        javax.swing.GroupLayout jPanelLoadingLayout = new javax.swing.GroupLayout(jPanelLoading);
+        jPanelLoading.setLayout(jPanelLoadingLayout);
+        jPanelLoadingLayout.setHorizontalGroup(
+            jPanelLoadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLoadingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelLoadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelLoadingLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel13)
+                        .addGap(40, 40, 40)))
+                .addContainerGap())
+        );
+        jPanelLoadingLayout.setVerticalGroup(
+            jPanelLoadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLoadingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -910,9 +964,9 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(jLabelTest)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(395, 395, 395)
+                .addComponent(jPanelLoading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(106, 106, 106))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -933,14 +987,11 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jLabelTest)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelLoading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(7, 7, 7)
@@ -1187,6 +1238,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1200,12 +1252,13 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelTest;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelLoading;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
