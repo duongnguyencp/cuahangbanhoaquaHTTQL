@@ -31,7 +31,7 @@ public class BienLaiKhoDAO extends DAO{
             while (rs.next()) {
                 BienLaiKho bienLaiKho = new BienLaiKho();
                 bienLaiKho.setId(rs.getInt("idBienLaiKho"));
-                bienLaiKho.setMaBienLai(rs.getString("maBienLai"));
+                bienLaiKho.setMaBienLai(rs.getString("maBienLaiKho"));
                 bienLaiKho.setNgayLap(rs.getString("ngayLap"));
                 Kho k=new Kho();
                 k.setId(rs.getInt("idKho"));

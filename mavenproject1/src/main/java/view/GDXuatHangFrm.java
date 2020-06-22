@@ -45,6 +45,14 @@ import model.*;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.collections4.Predicate;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
@@ -72,6 +80,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         addListenerText(jTextFieldTiLeThue);
         loadThemMatHangDaChon();
         createMatBienLai();
+
     }
     int countDigit(int number) {
         int count = 0;
@@ -361,6 +370,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jTextField18 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jLabelTest = new javax.swing.JLabel();
 
         jTextField5.setText("jTextField5");
 
@@ -855,6 +865,8 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButton1.setText("Tồn kho");
 
+        jLabelTest.setText("jLabel13");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -862,6 +874,8 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(jLabelTest)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -883,9 +897,14 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabelTest)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(7, 7, 7)
@@ -1014,7 +1033,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
 
             BienLaiXuat bienLaiXuat = new BienLaiXuat();
             bienLaiXuat.setMaBienLai(maBienLai);
-            
+
             bienLaiXuat.setNv(nvSelected);
             bienLaiXuat.setCuaHang(cuaHangSelected);
             System.out.println("cuaHangSelected=" + cuaHangSelected.getTenCuaHang());
@@ -1145,6 +1164,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelTest;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
