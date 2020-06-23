@@ -48,7 +48,7 @@ public class BienLaiXuatDAO extends DAO {
         System.out.println("BienLaiNhapDAO " + pham.getIdMatHang());
         ////////////// // //
         try {
-            String sql2 = "insert into [CuaHangHoaQua].[dbo].[BienLaiKho] (maBienLaiKho,ngayLap,idKho,soLuong,tongCong)"
+            String sql2 = "insert into [BienLaiKho] (maBienLaiKho,ngayLap,idKho,soLuong,tongCong)"
                     + " values(" + maBienLaiKho + ngayLap + idKho + soLuong + tongTien + ")";
             System.out.println(sql2);
             con.setAutoCommit(false);
@@ -56,7 +56,7 @@ public class BienLaiXuatDAO extends DAO {
             stm.executeUpdate();
             con.commit();
             
-            String sql3 = "select idBienLaiKho from [CuaHangHoaQua].[dbo].[BienLaiKho]";
+            String sql3 = "select idBienLaiKho from [BienLaiKho]";
             stm = con.prepareStatement(sql3);
             rs = stm.executeQuery();
             int maxId = 0;
@@ -67,11 +67,11 @@ public class BienLaiXuatDAO extends DAO {
                 }
             }
             idBienLaiKho = "'" + (maxId) + "',";
-            String sql4 = "update [CuaHangHoaQua].[dbo].[BienLaiKho] set soLuong = soLuong - " + bienLaiXuat.getSoLuong() + " where idBienLaiKho=" + pham.getBienLaiKho().getId();
+            String sql4 = "update [BienLaiKho] set soLuong = soLuong - " + bienLaiXuat.getSoLuong() + " where idBienLaiKho=" + pham.getBienLaiKho().getId();
             System.out.println(sql4);
-            sql3 = "insert into [CuaHangHoaQua].[dbo].[SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
+            sql3 = "insert into [SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
                     + " values(" + idBienLaiKho + maSanPham + gia + hanSuDung + idMatHang + ")";
-            String sql = "insert into [CuaHangHoaQua].[dbo].[BienLaiXuat] (idBienLaiKho,tiLeThue,idCuaHang,idNhanVien,tiLeLai)"
+            String sql = "insert into [BienLaiXuat] (idBienLaiKho,tiLeThue,idCuaHang,idNhanVien,tiLeLai)"
                     + " values(" + idBienLaiKho + tiLeThue + idCuaHang + idNhanVien + tiLeLai + ")";
             
             stm = con.prepareStatement(sql3);

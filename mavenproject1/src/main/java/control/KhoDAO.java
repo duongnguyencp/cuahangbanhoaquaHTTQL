@@ -24,7 +24,7 @@ public class KhoDAO extends DAO{
     public ArrayList<Kho> getAllKho() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[Kho]";
+        String sql = "select *  from [Kho]";
         ArrayList<Kho> listKho = new ArrayList<>();
         try {
             

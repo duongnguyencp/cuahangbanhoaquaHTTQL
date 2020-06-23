@@ -24,7 +24,7 @@ public class MatHangDAO extends DAO {
     public ArrayList<MatHang> getAllMatHang() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[MatHang]";
+        String sql = "select *  from [MatHang]";
         ArrayList<MatHang> listMatHang = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -58,7 +58,7 @@ public class MatHangDAO extends DAO {
         String ten = "N'" + hang.getTenMatHang() + "',";
         String donVi = "N'" + hang.getDonViTinh() + "',";
         String mota = "N'" + hang.getMoTa() + "'";
-        String sql = "insert into [CuaHangHoaQua].[dbo].[MatHang] (maMatHang,tenMatHang,donVi,moTa)"
+        String sql = "insert into [MatHang] (maMatHang,tenMatHang,donVi,moTa)"
                 + " values(" + ma + ten + donVi + mota + ")";
         try {
             con.setAutoCommit(false);

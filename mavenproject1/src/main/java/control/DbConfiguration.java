@@ -11,7 +11,7 @@ package control;
  */
 public class DbConfiguration {
     public static final String HOST_NAME = "localhost";
-    public static final String DB_NAME = "CuaHangHoaQua";
+    public static final String DB_NAME = "CuaHangHoaQua2";
     public static final String DB_PORT = "1433";
     public static final String USER_NAME = "sa";
     public static final String PASSWORD = "123";

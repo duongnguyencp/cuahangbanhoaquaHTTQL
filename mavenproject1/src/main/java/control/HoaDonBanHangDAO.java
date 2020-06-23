@@ -31,7 +31,11 @@ public class HoaDonBanHangDAO extends DAO {
         String idNhanVien = "N'" + hdbh.getNv().getIdNhanVien() + "'";
         PreparedStatement stm = null;
         ResultSet rs = null;
+<<<<<<< HEAD
         String sql2 = "insert into [CuaHangHoaQua].[dbo].[HoaDonBanHang] (soLuong,ngay,idSanPham,soTien,idNhanVien) values "
+=======
+        String sql2 = "insert into [HoaDonBanHang] (soLuong,ngay,idSanPham,soTien,idNhanVien) values "
+>>>>>>> origin/master
                 + " (" + soLuong + ngay + idSanPham + soTien + idNhanVien + ")";
         try {
             con.setAutoCommit(false);
@@ -64,7 +68,11 @@ public class HoaDonBanHangDAO extends DAO {
         String idNhanVien = "N'" + phieuThuChi.getNv().getIdNhanVien() + "',";
         String soTien = "N'" + phieuThuChi.getSoTien() + "',";
         String chuyenKhoan = "N'" + phieuThuChi.getChuyenKhoan() + "'";
+<<<<<<< HEAD
         String sql = "insert into [CuaHangHoaQua].[dbo].[PhieuThuChi] (loaiPhieu,soPhieu,ngayLap,tenDoiTuong,lyDo,dienGiai"
+=======
+        String sql = "insert into [PhieuThuChi] (loaiPhieu,soPhieu,ngayLap,tenDoiTuong,lyDo,dienGiai"
+>>>>>>> origin/master
                 + ",idNhanVien,soTien,chuyenKhoan)"
                 + " values(" + loaiPhieu + soPhieu + ngayLap + tenDoiTuong + lyDo + dienGiai + idNhanVien + soTien + chuyenKhoan + ")";
 
@@ -75,7 +83,11 @@ public class HoaDonBanHangDAO extends DAO {
         idNhanVien = "N'" + hdbh.getNv().getIdNhanVien() + "'";
         PreparedStatement stm = null;
         ResultSet rs = null;
+<<<<<<< HEAD
         String sql2 = "insert into [CuaHangHoaQua].[dbo].[HoaDonBanHang] (soLuong,ngay,idSanPham,soTien,idNhanVien) values "
+=======
+        String sql2 = "insert into [HoaDonBanHang] (soLuong,ngay,idSanPham,soTien,idNhanVien) values "
+>>>>>>> origin/master
                 + " values(" + soLuong + ngay + idSanPham + soTien + idNhanVien + ")";
         try {
             con.setAutoCommit(false);
@@ -99,10 +111,17 @@ public class HoaDonBanHangDAO extends DAO {
         }
     }
 
+<<<<<<< HEAD
     public ArrayList<HoaDonBanHang> getHoaDonBanHangs() {
         PreparedStatement stm = null;
         ResultSet rs = null;
         String sql = "select *  from [CuaHangHoaQua2].[dbo].[HoaDonBanHang]";
+=======
+    public ArrayList<HoaDonBanHang> geHoaDonBanHangs() {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql = "select *  from [HoaDonBanHang]";
+>>>>>>> origin/master
         ArrayList<HoaDonBanHang> hoaDonBanHangs = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

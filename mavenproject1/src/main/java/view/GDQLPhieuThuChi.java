@@ -182,7 +182,11 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
 
     String createMatBienLai() {
         HoaDonBanHangDAO aO = new HoaDonBanHangDAO();
+<<<<<<< HEAD
         ArrayList<HoaDonBanHang> hoaDonBanHangs = aO.getHoaDonBanHangs();
+=======
+        ArrayList<HoaDonBanHang> hoaDonBanHangs = aO.geHoaDonBanHangs();
+>>>>>>> origin/master
         int count = countDigit(hoaDonBanHangs.size() + 1);
         String maBH = "BH-";
         int rest = 7 - count;

@@ -24,7 +24,7 @@ public class SanPhamDAO extends DAO{
     public ArrayList<SanPham> getAllSanPham() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[SanPham] inner join [CuaHangHoaQua].[dbo].[MatHang] on SanPham.idMatHang=MatHang.idMatHang";
+        String sql = "select *  from [SanPham] inner join [MatHang] on SanPham.idMatHang=MatHang.idMatHang";
         ArrayList<SanPham> listSanPham = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -65,7 +65,7 @@ public class SanPhamDAO extends DAO{
         String hanSd = "N'" + sp.getHanSuDung()+ "',";
         String idMatHang = "N'" + sp.getIdMatHang()+ "',";
         String idBienLaiKho = "N'" + sp.getBienLaiKho().getId()+ "'";
-        String sql = "insert into [CuaHangHoaQua].[dbo].[SanPham] (gia,hanSuDung,idMatHang,idBienLaiKho)"
+        String sql = "insert into [SanPham] (gia,hanSuDung,idMatHang,idBienLaiKho)"
                 + " values(" + gia + hanSd + idMatHang + idBienLaiKho + ")";
         try {
             con.setAutoCommit(false);
