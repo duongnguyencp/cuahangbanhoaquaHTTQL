@@ -90,34 +90,25 @@ public class BienLaiNhapDAO extends DAO {
         System.out.println("BienLaiNhapDAO " + pham.getIdMatHang());
         ////////////// // //
         try {
-<<<<<<< HEAD
-            String sql2 = "insert into [CuaHangHoaQua].[dbo].[BienLaiKho] (maBienLaiKho,ngayLap,idKho,soLuong,tongCong)"
-=======
+
             String sql2 = "insert into [BienLaiKho] (maBienLaiKho,ngayLap,idKho,soLuong,tongCong)"
->>>>>>> origin/master
+
                     + " values(" + maBienLaiKho + ngayLap + idKho + soLuong + tongTien + ")";
             con.setAutoCommit(false);
             stm = con.prepareStatement(sql2);
             stm.executeUpdate();
             con.commit();
-<<<<<<< HEAD
-            String sql3 = "select max(idBienLaiKho) as idBienLaiKho from [CuaHangHoaQua].[dbo].[BienLaiKho]";
-=======
             String sql3 = "select max(idBienLaiKho) as idBienLaiKho from [BienLaiKho]";
->>>>>>> origin/master
             stm = con.prepareStatement(sql3);
             rs = stm.executeQuery();
             int maxId = 0;
             while (rs.next()) {
                 maxId = rs.getInt("idBienLaiKho");
-            }// tim max biên lai kho
+            }// tim max biÃªn lai kho
             maSanPham = "'" + (pham.getMaSp() + "" + maxId) + "',";
             idBienLaiKho = "'" + (maxId) + "',";
-<<<<<<< HEAD
             sql3 = "select max(idPhieuThuChi) as idPhieuThuChi from [CuaHangHoaQua].[dbo].[PhieuThuChi]";
-=======
             sql3 = "select max(idPhieuThuChi) as idPhieuThuChi from [PhieuThuChi]";
->>>>>>> origin/master
             stm = con.prepareStatement(sql3);
             rs = stm.executeQuery();
             maxId = 0;
@@ -125,15 +116,10 @@ public class BienLaiNhapDAO extends DAO {
                 maxId = rs.getInt("idPhieuThuChi");
             }
             idPhieuThuChi = "'" + (maxId) + "',";
-<<<<<<< HEAD
-            sql3 = "insert into [CuaHangHoaQua].[dbo].[SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
-                    + " values(" + idBienLaiKho + maSanPham + gia + hanSuDung + idMatHang + ")";
-            String sql = "insert into [CuaHangHoaQua].[dbo].[BienLaiNhap] (idBienLaiKho,idHopDong,idPhieuThuChi,idNhanVien)"
-=======
+
             sql3 = "insert into [SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
                     + " values(" + idBienLaiKho + maSanPham + gia + hanSuDung + idMatHang + ")";
             String sql = "insert into [BienLaiNhap] (idBienLaiKho,idHopDong,idPhieuThuChi,idNhanVien)"
->>>>>>> origin/master
                     + " values(" + idBienLaiKho + idHopDong + idPhieuThuChi + idNhanVien + ")";
             System.out.println(sql);
             stm = con.prepareStatement(sql3);
@@ -207,11 +193,7 @@ public class BienLaiNhapDAO extends DAO {
             maSanPham = "'" + (pham.getMaSp() + "" + maxId) + "',";
             idBienLaiKho = "'" + (maxId) + "',";
             System.out.println("maxID" + (maxId));
-<<<<<<< HEAD
-            sql3 = "insert into [CuaHangHoaQua].[dbo].[SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
-=======
             sql3 = "insert into [SanPham] (idBienLaiKho,maSp,gia,hanSuDung,idMatHang)"
->>>>>>> origin/master
                     + " values(" + idBienLaiKho + maSanPham + gia + hanSuDung + idMatHang + ")";
             String sql = "insert into [BienLaiNhap] (idBienLaiKho,idHopDong,idNhanVien)"
                     + " values(" + idBienLaiKho + idHopDong + idNhanVien + ")";

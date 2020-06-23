@@ -136,11 +136,8 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
                     .withIdentity("trigger1", "group1")
                     .startNow()
                     .withSchedule(simpleSchedule()
-<<<<<<< HEAD
                             .withIntervalInSeconds(10)
-=======
                             .withIntervalInSeconds(1)
->>>>>>> origin/master
                             .repeatForever())
                     .build();
 

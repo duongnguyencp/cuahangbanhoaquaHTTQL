@@ -63,13 +63,9 @@ public class CongNoDAO extends DAO {
         ResultSet rs = null;
         ResultSet rs2 = null;
         ResultSet rs3 = null;
-<<<<<<< HEAD
-        String sql1 = " select sum(soTienNo) as tongNo, cn.idNhaCungCap from [CuaHangHoaQua].[dbo].[CongNo] cn group by idNhaCungCap ";
-        String sql3 = "  select sum(ptc.soTien) as tongTienChi, cn.idNhaCungCap from [CuaHangHoaQua].[dbo].[PhieuThuChi] ptc inner join  [CuaHangHoaQua].[dbo].[CongNo] cn on cn.idPhieuThuChi=ptc.idPhieuThuChi  group by cn.idNhaCungCap ";
-=======
+
         String sql1 = " select sum(soTienNo) as tongNo, cn.idNhaCungCap from [CongNo] cn group by idNhaCungCap ";
         String sql3 = "  select sum(ptc.soTien) as tongTienChi, cn.idNhaCungCap from [PhieuThuChi] ptc inner join  [CongNo] cn on cn.idPhieuThuChi=ptc.idPhieuThuChi  group by cn.idNhaCungCap ";
->>>>>>> origin/master
         ArrayList<RecordCongNoNCC> listRecordCongNoNCC = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql1);
@@ -82,11 +78,7 @@ public class CongNoDAO extends DAO {
                 int soTienChi = rs3.getInt("tongTienChi");
                 soTienNo=soTienNo-soTienChi;
                 int idNhaCungCap = rs.getInt("idNhaCungCap");
-<<<<<<< HEAD
-                String sql2 = "select * from [CuaHangHoaQua].[dbo].[NhaCungCap] where idNhaCungCap=" + idNhaCungCap;
-=======
                 String sql2 = "select * from [NhaCungCap] where idNhaCungCap=" + idNhaCungCap;
->>>>>>> origin/master
                 stm = con.prepareStatement(sql2);
                 rs2 = stm.executeQuery();
                 rs2.next();
@@ -126,22 +118,15 @@ public class CongNoDAO extends DAO {
         String idNhanVien = "N'" + phieuThuChi.getNv().getIdNhanVien() + "',";
         String soTien = "N'" + phieuThuChi.getSoTien() + "',";
         String chuyenKhoan = "N'" + phieuThuChi.getChuyenKhoan() + "'";
-<<<<<<< HEAD
-        String sql = "insert into [CuaHangHoaQua].[dbo].[PhieuThuChi] (loaiPhieu,soPhieu,ngayLap,tenDoiTuong,lyDo,dienGiai"
-=======
+
         String sql = "insert into [PhieuThuChi] (loaiPhieu,soPhieu,ngayLap,tenDoiTuong,lyDo,dienGiai"
->>>>>>> origin/master
                 + ",idNhanVien,soTien,chuyenKhoan)"
                 + " values(" + loaiPhieu + soPhieu + ngayLap + tenDoiTuong + lyDo + dienGiai + idNhanVien + soTien + chuyenKhoan + ")";
 
         String maSoThue = "N'" + cn.getMaSoThue() + "',";
         String soTienNo = "N'" + cn.getSoTienNo() + "',";
         String idNhaCungCap = "N'" + cn.getCap().getId() + "'";
-<<<<<<< HEAD
-        String sql2 = "select * from [CuaHangHoaQua].[dbo].[PhieuThuChi]";
-=======
         String sql2 = "select * from [PhieuThuChi]";
->>>>>>> origin/master
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -159,11 +144,8 @@ public class CongNoDAO extends DAO {
                 }
             }
             String idPhieuThuChi = "N'" + (maxId) + "',";
-<<<<<<< HEAD
-            sql = "insert into [CuaHangHoaQua].[dbo].[CongNo] (maSoThue,soTienNo,idPhieuThuChi,idNhaCungCap)"
-=======
+
             sql = "insert into [CongNo] (maSoThue,soTienNo,idPhieuThuChi,idNhaCungCap)"
->>>>>>> origin/master
                     + " values(" + maSoThue + soTienNo + idPhieuThuChi + idNhaCungCap + ")";
             stm = con.prepareStatement(sql);
             stm.executeUpdate();
@@ -199,11 +181,7 @@ public class CongNoDAO extends DAO {
         String maSoThue = "N'" + cn.getMaSoThue() + "',";
         String soTienNo = "N'" + cn.getSoTienNo() + "',";
         String idNhaCungCap = "N'" + cn.getCap().getId() + "'";
-<<<<<<< HEAD
-        String sql2 = "select * from [CuaHangHoaQua].[dbo].[PhieuThuChi]";
-=======
         String sql2 = "select * from [PhieuThuChi]";
->>>>>>> origin/master
 
         try {
             stm = con.prepareStatement(sql2);
@@ -216,11 +194,7 @@ public class CongNoDAO extends DAO {
                 }
             }
             String idPhieuThuChi = "N'" + (maxId) + "',";
-<<<<<<< HEAD
-            String sql = "insert into [CuaHangHoaQua].[dbo].[CongNo] (maSoThue,soTienNo,idPhieuThuChi,idNhaCungCap)"
-=======
             String sql = "insert into [CongNo] (maSoThue,soTienNo,idPhieuThuChi,idNhaCungCap)"
->>>>>>> origin/master
                     + " values(" + maSoThue + soTienNo + idPhieuThuChi + idNhaCungCap + ")";
             con.setAutoCommit(false);
             stm = con.prepareStatement(sql);
