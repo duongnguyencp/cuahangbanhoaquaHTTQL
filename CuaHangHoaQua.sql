@@ -306,7 +306,7 @@ insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,i
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (8,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,8);
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (9,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,9);
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (10,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,10);
-insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (11,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,11);
+insert into [CuaHangHoaQua].[dbo].HopDong (tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',18,344012);
 SET IDENTITY_INSERT [CuaHangHoaQua].[dbo].HopDong OFF;  
 DECLARE @TransactionName varchar(20) = 'Transaction1'; 
 BEGIN TRAN @TransactionName  

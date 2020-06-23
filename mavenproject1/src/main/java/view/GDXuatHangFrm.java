@@ -45,12 +45,23 @@ import model.*;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.collections4.Predicate;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.*;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
  * @author Duong
  */
-public class GDXuatHangFrm extends javax.swing.JFrame {
+public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
 
     private Kho khoSelected;
     private ArrayList<Kho> listKho;
@@ -72,6 +83,67 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         addListenerText(jTextFieldTiLeThue);
         loadThemMatHangDaChon();
         createMatBienLai();
+        loadUpdateDB();
+        jPanelLoading.setVisible(false);
+
+    }
+
+    @Override
+    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+        jPanelLoading.setVisible(true);
+        loadDanhSachMH();        
+//        try {
+//            Thread t = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        for (int i = 0; i < 200; i++) {
+//                            int m = jProgressBar1.getMaximum();
+//                            int v = jProgressBar1.getValue();
+//                            if (v < m) {
+//                                jProgressBar1.setValue(jProgressBar1.getValue() + 1);
+//                            } else {
+//                                i = 201;
+//                                jPanelLoading.setVisible(false);
+//                                loadDanhSachMH();
+//                            }
+//                            Thread.sleep(8);
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//            t.start();
+//
+//        } catch (Exception e) {
+//        }
+        System.out.println("This is a quartz job!" + arg0.getFireTime());
+    }
+
+    void loadUpdateDB() {
+        try {
+            SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
+
+            Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
+
+            sched.start();
+            JobDetail job = newJob(GDXuatHangFrm.class)
+                    .withIdentity("job1", "group1") // name "myJob", group "group1"
+                    .build();
+            // Trigger the job to run now, and then every 40 seconds
+            Trigger trigger = newTrigger()
+                    .withIdentity("trigger1", "group1")
+                    .startNow()
+                    .withSchedule(simpleSchedule()
+                            .withIntervalInSeconds(10)
+                            .repeatForever())
+                    .build();
+
+            // Tell quartz to schedule the job using our trigger
+            sched.scheduleJob(job, trigger);
+        } catch (Exception e) {
+        }
     }
 
     int countDigit(int number) {
@@ -362,6 +434,9 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jTextField18 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jPanelLoading = new javax.swing.JPanel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel13 = new javax.swing.JLabel();
 
         jTextField5.setText("jTextField5");
 
@@ -856,6 +931,32 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButton1.setText("Tồn kho");
 
+        jLabel13.setText("Đang tải...");
+
+        javax.swing.GroupLayout jPanelLoadingLayout = new javax.swing.GroupLayout(jPanelLoading);
+        jPanelLoading.setLayout(jPanelLoadingLayout);
+        jPanelLoadingLayout.setHorizontalGroup(
+            jPanelLoadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLoadingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelLoadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelLoadingLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel13)
+                        .addGap(40, 40, 40)))
+                .addContainerGap())
+        );
+        jPanelLoadingLayout.setVerticalGroup(
+            jPanelLoadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLoadingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -863,7 +964,9 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(395, 395, 395)
+                .addComponent(jPanelLoading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(106, 106, 106))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -886,7 +989,9 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelLoading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(7, 7, 7)
@@ -1015,7 +1120,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
 
             BienLaiXuat bienLaiXuat = new BienLaiXuat();
             bienLaiXuat.setMaBienLai(maBienLai);
-            
+
             bienLaiXuat.setNv(nvSelected);
             bienLaiXuat.setCuaHang(cuaHangSelected);
             System.out.println("cuaHangSelected=" + cuaHangSelected.getTenCuaHang());
@@ -1133,6 +1238,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1151,6 +1257,8 @@ public class GDXuatHangFrm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelLoading;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

@@ -105,8 +105,8 @@
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jComboBoxNcc" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jTextField3" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jTextField2" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jTextFieldGhiChu" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jTextFieldLyDo" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jComboBoxKho" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="165" max="32767" attributes="0"/>
@@ -153,12 +153,12 @@
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel4" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField2" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldLyDo" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel7" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField3" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldGhiChu" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -176,7 +176,7 @@
             <Property name="text" type="java.lang.String" value="Nh&#xe0; cung c&#x1ea5;p"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="jTextFieldGhiChu">
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldMaBienLai">
           <Properties>
@@ -208,7 +208,7 @@
             <Property name="text" type="java.lang.String" value="Ng&#xe0;y"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="jTextFieldLyDo">
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBoxNhanVien">
           <Properties>

@@ -30,14 +30,14 @@ public class BienLaiKhoDAO extends DAO{
             rs = stm.executeQuery();
             while (rs.next()) {
                 BienLaiKho bienLaiKho = new BienLaiKho();
-                bienLaiKho.setId(rs.getInt(1));
-                bienLaiKho.setMaBienLai(rs.getString(2));
-                bienLaiKho.setNgayLap(rs.getString(3));
+                bienLaiKho.setId(rs.getInt("idBienLaiKho"));
+                bienLaiKho.setMaBienLai(rs.getString("maBienLaiKho"));
+                bienLaiKho.setNgayLap(rs.getString("ngayLap"));
                 Kho k=new Kho();
-                k.setId(rs.getInt(4));
+                k.setId(rs.getInt("idKho"));
                 bienLaiKho.setKho(k);
-                bienLaiKho.setSoLuong(rs.getInt(5));
-                bienLaiKho.setTongCong(rs.getInt(6));
+                bienLaiKho.setSoLuong(rs.getInt("soLuong"));
+                bienLaiKho.setTongCong(rs.getInt("tongCong"));
                 bienLaiKhos.add(bienLaiKho);
             }
 

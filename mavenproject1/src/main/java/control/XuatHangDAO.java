@@ -25,6 +25,64 @@ public class XuatHangDAO extends DAO {
         super();
     }
 
+    public ArrayList<RecordSanPham> loadSanPhamXuatKho(Kho kho) {
+        ArrayList<Integer> listIdSp = new ArrayList<>();
+        ArrayList<Integer> listConLai = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql2 = "select SanPham.idSanPham, (BienLaiKho.soLuong-HoaDonBanHang.soLuong) as conLai  from [CuaHangHoaQua].[dbo].[HoaDonBanHang] inner join [CuaHangHoaQua].[dbo].[SanPham] on SanPham.idSanPham=HoaDonBanHang.idHoaDonBanHang inner join [CuaHangHoaQua].[dbo].[BienLaiKho] on BienLaiKho.idBienLaiKho=SanPham.idSanPham ";
+        String sql = "   select * from [CuaHangHoaQua].[dbo].[SanPham] sp inner join   [CuaHangHoaQua].[dbo].[BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
+                + "               inner join  [CuaHangHoaQua].[dbo].[BienLaiXuat] blx on sp.idBienLaiKho=blx.idBienLaiKho inner join [CuaHangHoaQua].[dbo].[MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
+        ArrayList<RecordSanPham> listSanPhamDX = new ArrayList<RecordSanPham>();
+        try {
+            stm = con.prepareStatement(sql2);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                listIdSp.add(rs.getInt("idSanPham"));
+                listConLai.add(rs.getInt("conLai"));
+            }
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                SanPham sp = new SanPham();
+                sp.setMaSp(rs.getString("maSp"));
+                sp.setIdSanPham(rs.getInt("idSanPham"));
+                RecordSanPham recordSanPham = new RecordSanPham();
+                boolean check=false;
+                for (int i = 0; i < listIdSp.size(); i++) {
+                    if (sp.getIdSanPham() == listIdSp.get(i).intValue()) {
+                        int conLai = listConLai.get(i);
+                        recordSanPham.setSoLuong(conLai);
+                        check=true;
+                    }
+
+                }
+                sp.setTenMatHang(rs.getString("tenMatHang"));
+                sp.setMaMatHang(rs.getString("maMatHang"));
+                sp.setGia(rs.getInt("gia"));
+                sp.setHanSuDung(rs.getString("hanSuDung"));
+                sp.setIdMatHang(rs.getInt("idMatHang"));
+                BienLaiKho blk = new BienLaiKho();
+                int soLuong = rs.getInt("soLuong");
+                blk.setId(rs.getInt("idBienLaiKho"));
+                sp.setBienLaiKho(blk);
+                sp.setDonViTinh(rs.getString("donVi"));
+                recordSanPham.setPham(sp);
+                if(!check)
+                recordSanPham.setSoLuong(soLuong);
+                listSanPhamDX.add(recordSanPham);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stm.close();
+                con.close();
+            } catch (SQLException ex) {
+            }
+        }
+        return listSanPhamDX;
+    }
 //    public BienLaiNhap loadBienLaiNhapTheoKho(SanPham sp) {
 //        PreparedStatement stm = null;
 //        ResultSet rs = null;
@@ -59,12 +117,12 @@ public class XuatHangDAO extends DAO {
 //        }
 //        return listMHTrongKho;
 //    }
+
     public ArrayList<RecordSanPham> loadMatHangTrongKhoTheoKho(Kho kho) {
         PreparedStatement stm = null;
         ResultSet rs = null;
         String sql = "  select sp.maSp, sp.idSanPham,mh.tenMatHang,mh.maMatHang, sp.gia,sp.hanSuDung,sp.idMatHang,blk.idBienLaiKho,blk.soLuong,mh.donVi from [CuaHangHoaQua].[dbo].[SanPham] sp inner join   [CuaHangHoaQua].[dbo].[BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
                 + "  inner join  [CuaHangHoaQua].[dbo].[BienLaiNhap] bln on sp.idBienLaiKho=bln.idBienLaiKho inner join [CuaHangHoaQua].[dbo].[MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
-        System.out.println(sql);
         ArrayList<RecordSanPham> listMHTrongKho = new ArrayList<RecordSanPham>();
         try {
             stm = con.prepareStatement(sql);

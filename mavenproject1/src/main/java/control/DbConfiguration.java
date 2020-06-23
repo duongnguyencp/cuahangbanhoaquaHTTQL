@@ -17,7 +17,7 @@ public class DbConfiguration {
     public static final String PASSWORD = "123";
     public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     public static final int DB_MIN_CONNECTIONS = 2;
-    public static final int DB_MAX_CONNECTIONS = 4;
+    public static final int DB_MAX_CONNECTIONS = 10;
     // jdbc:mysql://hostname:port/dbname
     public static final String CONNECTION_URL = "jdbc:sqlserver://" + HOST_NAME + ":" + DB_PORT + ";databaseName=" + DB_NAME;
      private DbConfiguration() {

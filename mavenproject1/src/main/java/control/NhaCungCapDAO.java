@@ -20,7 +20,7 @@ public class NhaCungCapDAO extends DAO {
     public NhaCungCapDAO() {
         super();
     }
-
+   
     public ArrayList<NhaCungCap> getAllNhaCungCap() {
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -31,10 +31,10 @@ public class NhaCungCapDAO extends DAO {
             rs = stm.executeQuery();
             while (rs.next()) {
                 NhaCungCap ncc = new NhaCungCap();
-                ncc.setId(rs.getInt(1));
-                ncc.setTen(rs.getString(2));
-                ncc.setSodienthoai(rs.getString(3));
-                ncc.setEmail(rs.getString(4));
+                ncc.setId(rs.getInt("idNhaCungCap"));
+                ncc.setTen(rs.getString("ten"));
+                ncc.setSodienthoai(rs.getString("sodienthoai"));
+                ncc.setEmail(rs.getString("email"));
                 listNhaCC.add(ncc);
             }
 
