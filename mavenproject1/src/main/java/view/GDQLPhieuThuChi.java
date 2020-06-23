@@ -164,6 +164,7 @@ public class GDQLPhieuThuChi extends javax.swing.JFrame {
         jComboBoxNhanVien.removeAllItems();
         NhanVienDAO nhanVienDAO = new NhanVienDAO();
         ArrayList<NhanVien> listNV = nhanVienDAO.getAllNVBanHang();
+        if(listNV.size()>0)
         selectNV = listNV.get(0);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (int i = 0; i < listNV.size(); i++) {

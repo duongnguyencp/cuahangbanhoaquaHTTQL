@@ -66,6 +66,7 @@ public class GDTaoPhieuThuChi extends javax.swing.JFrame {
         jComboBoxNhanVien.removeAllItems();
         NhanVienDAO nhanVienDAO = new NhanVienDAO();
         listNV = nhanVienDAO.getAllNVKeToan();
+        if(listNV.size()>0)
         selectedNV = listNV.get(0);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (int i = 0; i < listNV.size(); i++) {
