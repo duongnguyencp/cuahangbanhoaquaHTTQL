@@ -25,7 +25,7 @@ public class CuaHangDAO extends DAO {
     public CuaHang getCuaHangById(int id) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[CuaHang] where idCuaHang=" + id + "";
+        String sql = "select *  from [CuaHang] where idCuaHang=" + id + "";
         CuaHang cuaHang = new CuaHang();
         try {
             stm = con.prepareStatement(sql);
@@ -57,7 +57,7 @@ public class CuaHangDAO extends DAO {
     public ArrayList<CuaHang> getAllCuaHang() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[CuaHang]";
+        String sql = "select *  from [CuaHang]";
         ArrayList<CuaHang> listCuaHang = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

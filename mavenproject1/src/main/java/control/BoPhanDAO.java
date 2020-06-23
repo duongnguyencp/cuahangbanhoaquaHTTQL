@@ -22,7 +22,7 @@ public class BoPhanDAO extends DAO{
      public BoPhan getBoPhanById(int id) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[BoPhan] where idBoPhan="+id+"";
+        String sql = "select *  from [BoPhan] where idBoPhan="+id+"";
         BoPhan boPhan=new BoPhan();
         try {
             stm = con.prepareStatement(sql);
@@ -52,7 +52,7 @@ public class BoPhanDAO extends DAO{
     public ArrayList<BoPhan> getAllBoPhan() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[BoPhan]";
+        String sql = "select *  from [BoPhan]";
         ArrayList<BoPhan> listBoPhan = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

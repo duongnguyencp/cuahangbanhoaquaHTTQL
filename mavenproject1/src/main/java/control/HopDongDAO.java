@@ -20,7 +20,7 @@ public class HopDongDAO extends DAO{
     public HopDong getHopDongByNcc(NhaCungCap cap){
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[HopDong] where idNhaCungCap="+cap.getId()+"";
+        String sql = "select *  from [HopDong] where idNhaCungCap="+cap.getId()+"";
         HopDong dong=new HopDong();
         try {
             stm = con.prepareStatement(sql);

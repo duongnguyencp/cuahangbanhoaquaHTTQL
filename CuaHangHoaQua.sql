@@ -178,6 +178,14 @@ CREATE TABLE [CuaHangHoaQua].[dbo].HoaDonBanHang (
 	foreign key (idSanPham) references SanPham(idSanPham),
 	foreign key (idNhanVien) references NhanVien(idNhanVien)
 );
+CREATE TABLE [CuaHangHoaQua].[dbo].SPDB (
+    idSPDB int PRIMARY KEY IDENTITY(1,1),
+	idHoaDonBanHang int not null,
+	idSanPham int not null,
+	soLuong int not null,
+	foreign key (idSanPham) references SanPham(idSanPham),
+	foreign key (idHoaDonBanHang) references HoaDonBanHang(idHoaDonBanHang)
+);
 /*---------------------Xoa Tat Ca-------------------------*/
 drop table [CuaHangHoaQua].[dbo].CongNo
 drop table [CuaHangHoaQua].[dbo].BienLaiNhap
@@ -195,6 +203,7 @@ drop table [CuaHangHoaQua].[dbo].NhaCungCap
 drop table [CuaHangHoaQua].[dbo].Kho
 drop table [CuaHangHoaQua].[dbo].Nguoi
 drop table [CuaHangHoaQua].[dbo].PhieuThuChi
+drop table [CuaHangHoaQua].[dbo].SPDB
 
 /*-------------------insert--------------------------------*/
 insert into [CuaHangHoaQua].[dbo].NhaCungCap (ten,email,sodienthoai) values ('Jorge Biaggetti','jbiaggetti0@constantcontact.com','202-297-3749')
@@ -308,7 +317,9 @@ insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,i
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (9,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,9);
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (10,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,10);
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (11,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,11);
-SET IDENTITY_INSERT [CuaHangHoaQua].[dbo].HopDong OFF;  
+SET IDENTITY_INSERT [CuaHangHoaQua].[dbo].HopDong OFF; 
+
+ 
 DECLARE @TransactionName varchar(20) = 'Transaction1'; 
 BEGIN TRAN @TransactionName  
 insert into [CuaHangHoaQua].[dbo].HopDong (idHopDong,tenHopDong,ngayKi,denNgay,idNhanVien,idNhaCungCap) values (12,N'Hợp đồng hợp tác đầu tư',N'12/06/2020',N'vô thời hạn',2,9);

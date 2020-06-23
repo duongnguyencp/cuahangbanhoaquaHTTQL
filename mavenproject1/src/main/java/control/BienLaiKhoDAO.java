@@ -23,7 +23,7 @@ public class BienLaiKhoDAO extends DAO{
     public ArrayList<BienLaiKho> getAllBienLaiKho() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[BienLaiKho]";
+        String sql = "select *  from [BienLaiKho]";
         ArrayList<BienLaiKho> bienLaiKhos = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

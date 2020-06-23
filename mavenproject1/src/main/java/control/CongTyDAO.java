@@ -25,7 +25,7 @@ public class CongTyDAO extends DAO {
     public CongTy getCongTyById(int id) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[CongTy] where idCongTy=" + id + "";
+        String sql = "select *  from [CongTy] where idCongTy=" + id + "";
         CongTy congTy = new CongTy();
         try {
             stm = con.prepareStatement(sql);
@@ -53,7 +53,7 @@ public class CongTyDAO extends DAO {
     public ArrayList<CongTy> getAllCongTy() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[CongTy]";
+        String sql = "select *  from [CongTy]";
         ArrayList<CongTy> listCongTy = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

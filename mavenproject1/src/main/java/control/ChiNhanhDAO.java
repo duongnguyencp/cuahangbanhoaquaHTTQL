@@ -25,7 +25,7 @@ public class ChiNhanhDAO extends DAO {
     public ChiNhanh getChiNhanhById(int id) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[ChiNhanh] where idChiNhanh="+id+"";
+        String sql = "select *  from [ChiNhanh] where idChiNhanh="+id+"";
         ChiNhanh chiNhanh=new ChiNhanh();
         try {
             stm = con.prepareStatement(sql);
@@ -52,7 +52,7 @@ public class ChiNhanhDAO extends DAO {
     public ArrayList<ChiNhanh> getAllChiNhanh() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[ChiNhanh]";
+        String sql = "select *  from [ChiNhanh]";
         ArrayList<ChiNhanh> listChiNhanh = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

@@ -27,7 +27,7 @@ public class PhieuThuChiDAO extends DAO {
     public ArrayList<RecordChiTietCongNo> getAlPTCByName(String name) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "  select *  from [CuaHangHoaQua].[dbo].[PhieuThuChi] inner join [CuaHangHoaQua].[dbo].[CongNo] on CongNo.idPhieuThuChi=PhieuThuChi.idPhieuThuChi  where tenDoiTuong='" + name + "'";
+        String sql = "  select *  from [PhieuThuChi] inner join [CongNo] on CongNo.idPhieuThuChi=PhieuThuChi.idPhieuThuChi  where tenDoiTuong='" + name + "'";
         ArrayList<RecordChiTietCongNo> listPTC = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -76,7 +76,7 @@ public class PhieuThuChiDAO extends DAO {
     public ArrayList<PhieuThuChi> getAllPhieuThuChi() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[PhieuThuChi]";
+        String sql = "select *  from [PhieuThuChi]";
         ArrayList<PhieuThuChi> phieuThuChis = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -131,7 +131,7 @@ public class PhieuThuChiDAO extends DAO {
         Date sDateD = converToDate(sDate);
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[PhieuThuChi]";
+        String sql = "select *  from [PhieuThuChi]";
         ArrayList<PhieuThuChi> phieuThuChis = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -184,7 +184,7 @@ public class PhieuThuChiDAO extends DAO {
         String idNhanVien = "N'" + phieuThuChi.getNv().getIdNhanVien() + "',";
         String soTien = "N'" + phieuThuChi.getSoTien() + "',";
         String chuyenKhoan = "N'" + phieuThuChi.getChuyenKhoan() + "'";
-        String sql = "insert into [CuaHangHoaQua].[dbo].[PhieuThuChi] (loaiPhieu,soPhieu,ngayLap,tenDoiTuong,lyDo,dienGiai"
+        String sql = "insert into [PhieuThuChi] (loaiPhieu,soPhieu,ngayLap,tenDoiTuong,lyDo,dienGiai"
                 + ",idNhanVien,soTien,chuyenKhoan)"
                 + " values(" + loaiPhieu + soPhieu + ngayLap + tenDoiTuong + lyDo + dienGiai + idNhanVien + soTien + chuyenKhoan + ")";
         try {

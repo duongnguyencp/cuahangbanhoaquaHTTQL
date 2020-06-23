@@ -24,7 +24,7 @@ public class NhanVienDAO extends DAO {
     public ArrayList<NhanVien> getAllNVBanHang(){
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = " select * from  [CuaHangHoaQua].[dbo].[NhanVien]  inner join [CuaHangHoaQua].[dbo].[Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Bán hàng'";
+        String sql = " select * from  [NhanVien]  inner join [Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Bán hàng'";
         ArrayList<NhanVien> listNhanVien = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -67,7 +67,7 @@ public class NhanVienDAO extends DAO {
     public ArrayList<NhanVien> getAllNVKeToan(){
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = " select * from  [CuaHangHoaQua].[dbo].[NhanVien]  inner join [CuaHangHoaQua].[dbo].[Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Kế toán'";
+        String sql = " select * from  [NhanVien]  inner join [Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Kế toán'";
         ArrayList<NhanVien> listNhanVien = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -110,7 +110,7 @@ public class NhanVienDAO extends DAO {
     public ArrayList<NhanVien> getAllNVKho(){
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = " select * from  [CuaHangHoaQua].[dbo].[NhanVien]  inner join [CuaHangHoaQua].[dbo].[Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Quản lí kho'";
+        String sql = " select * from  [NhanVien]  inner join [Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Quản lí kho'";
         ArrayList<NhanVien> listNhanVien = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
@@ -153,7 +153,7 @@ public class NhanVienDAO extends DAO {
     public ArrayList<NhanVien> getAllNhanVien() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[NhanVien] inner join [CuaHangHoaQua].[dbo].[Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi";
+        String sql = "select *  from [NhanVien] inner join [Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi";
         ArrayList<NhanVien> listNhanVien = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

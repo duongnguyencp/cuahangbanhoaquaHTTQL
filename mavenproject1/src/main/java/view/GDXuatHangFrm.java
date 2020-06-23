@@ -136,7 +136,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
                     .withIdentity("trigger1", "group1")
                     .startNow()
                     .withSchedule(simpleSchedule()
-                            .withIntervalInSeconds(10)
+                            .withIntervalInSeconds(1)
                             .repeatForever())
                     .build();
 
@@ -269,6 +269,7 @@ public class GDXuatHangFrm extends javax.swing.JFrame implements Job {
 
     // tải dữ liệu từ cơ sở dữ liệu vào bảng mặt hàng
     void loadDanhSachMH() {
+        System.out.println("loading...");
         XuatHangDAO aO = new XuatHangDAO();
         listMatHang = aO.loadMatHangTrongKhoTheoKho(khoSelected);
         DefaultTableModel defaultTableModel = new DefaultTableModel(new String[]{"", "Mã Sản Phẩm", "Mã mặt hàng", "Tên mặt hàng", "ĐVT", "Số lượng", "Giá"}, 0);

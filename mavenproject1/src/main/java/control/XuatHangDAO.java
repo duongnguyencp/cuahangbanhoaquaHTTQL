@@ -30,9 +30,9 @@ public class XuatHangDAO extends DAO {
         ArrayList<Integer> listConLai = new ArrayList<>();
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql2 = "select SanPham.idSanPham, (BienLaiKho.soLuong-HoaDonBanHang.soLuong) as conLai  from [CuaHangHoaQua].[dbo].[HoaDonBanHang] inner join [CuaHangHoaQua].[dbo].[SanPham] on SanPham.idSanPham=HoaDonBanHang.idHoaDonBanHang inner join [CuaHangHoaQua].[dbo].[BienLaiKho] on BienLaiKho.idBienLaiKho=SanPham.idSanPham ";
-        String sql = "   select * from [CuaHangHoaQua].[dbo].[SanPham] sp inner join   [CuaHangHoaQua].[dbo].[BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
-                + "               inner join  [CuaHangHoaQua].[dbo].[BienLaiXuat] blx on sp.idBienLaiKho=blx.idBienLaiKho inner join [CuaHangHoaQua].[dbo].[MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
+        String sql2 = "select SanPham.idSanPham, (BienLaiKho.soLuong-HoaDonBanHang.soLuong) as conLai  from [HoaDonBanHang] inner join [SanPham] on SanPham.idSanPham=HoaDonBanHang.idHoaDonBanHang inner join [BienLaiKho] on BienLaiKho.idBienLaiKho=SanPham.idSanPham ";
+        String sql = "   select * from [SanPham] sp inner join   [BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
+                + "               inner join  [BienLaiXuat] blx on sp.idBienLaiKho=blx.idBienLaiKho inner join [MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
         ArrayList<RecordSanPham> listSanPhamDX = new ArrayList<RecordSanPham>();
         try {
             stm = con.prepareStatement(sql2);
@@ -119,10 +119,11 @@ public class XuatHangDAO extends DAO {
 //    }
 
     public ArrayList<RecordSanPham> loadMatHangTrongKhoTheoKho(Kho kho) {
+        System.out.println("a");
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "  select sp.maSp, sp.idSanPham,mh.tenMatHang,mh.maMatHang, sp.gia,sp.hanSuDung,sp.idMatHang,blk.idBienLaiKho,blk.soLuong,mh.donVi from [CuaHangHoaQua].[dbo].[SanPham] sp inner join   [CuaHangHoaQua].[dbo].[BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
-                + "  inner join  [CuaHangHoaQua].[dbo].[BienLaiNhap] bln on sp.idBienLaiKho=bln.idBienLaiKho inner join [CuaHangHoaQua].[dbo].[MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
+        String sql = "  select sp.maSp, sp.idSanPham,mh.tenMatHang,mh.maMatHang, sp.gia,sp.hanSuDung,sp.idMatHang,blk.idBienLaiKho,blk.soLuong,mh.donVi from [SanPham] sp inner join   [BienLaiKho] blk on sp.idBienLaiKho=blk.idBienLaiKho \n"
+                + "  inner join  [BienLaiNhap] bln on sp.idBienLaiKho=bln.idBienLaiKho inner join [MatHang] mh on sp.idMatHang=mh.idMatHang where idKho=" + kho.getId();
         ArrayList<RecordSanPham> listMHTrongKho = new ArrayList<RecordSanPham>();
         try {
             stm = con.prepareStatement(sql);
