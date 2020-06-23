@@ -102,7 +102,7 @@ public class HoaDonBanHangDAO extends DAO {
     public ArrayList<HoaDonBanHang> getHoaDonBanHangs() {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select *  from [CuaHangHoaQua].[dbo].[HoaDonBanHang]";
+        String sql = "select *  from [CuaHangHoaQua2].[dbo].[HoaDonBanHang]";
         ArrayList<HoaDonBanHang> hoaDonBanHangs = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);
