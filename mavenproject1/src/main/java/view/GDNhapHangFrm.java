@@ -38,12 +38,23 @@ import model.*;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.collections4.Predicate;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.*;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *
  * @author Duong
  */
-public class GDNhapHangFrm extends javax.swing.JFrame {
+public class GDNhapHangFrm extends javax.swing.JFrame implements Job {
 
     private NhaCungCap nccSelected;
     private ArrayList<NhaCungCap> listNcc;
@@ -65,6 +76,41 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         addListenerText(jTextFieldDonGia);
         loadThemMatHangDaChon();
         createMatBienLai();
+        loadUpdateDB();
+    }
+
+    @Override
+    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+        loadDanhSachMH();
+    }
+
+    void loadUpdateDB() {
+        Thread run;
+        Runnable task = null;
+        run = new Thread(task);
+        task = new Runnable() {
+            boolean exit = false;
+
+            @Override
+            public void run() {
+                while (!exit) {
+                    loadNCC();
+                    loadNV();
+                    loadDanhSachMH();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
+            public void stop() {
+                exit = true;
+            }
+        };
+        run = new Thread(task);
+        run.start();
     }
 
     int countDigit(int number) {
@@ -189,6 +235,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
     void loadDanhSachMH() {
         DefaultTableModel defaultTableModel = new DefaultTableModel(new String[]{"", "Mã mặt hàng", "Tên mặt hàng", "ĐVT", "Mô tả"}, 0);
         defaultTableModel.setRowCount(0);
+        System.out.println("loadDanhSachMH");
         listMatHang = new MatHangDAO().getAllMatHang();
         jTableDanhSachMH.setModel(defaultTableModel);
         jTableDanhSachMH.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -230,6 +277,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
             public void itemStateChanged(ItemEvent e) {
                 JComboBox comboBoxTest = (JComboBox) e.getSource();
                 int stt = comboBoxTest.getSelectedIndex();
+                if(stt!=-1)
                 nvSelected = listNV.get(stt);
             }
         });
@@ -274,6 +322,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
             public void itemStateChanged(ItemEvent e) {
                 JComboBox comboBoxTest = (JComboBox) e.getSource();
                 int stt = comboBoxTest.getSelectedIndex();
+                if(stt!=-1)
                 nccSelected = listNcc.get(stt);
             }
         });
@@ -1108,7 +1157,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonTimKiemActionPerformed
     public boolean compareSanPham(SanPham sp1, SanPham sp2) {
-        if (sp1.getIdMatHang()==sp2.getIdMatHang()) {
+        if (sp1.getIdMatHang() == sp2.getIdMatHang()) {
             return true;
         }
         return false;
@@ -1149,7 +1198,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         if (check = true) {
             boolean check2 = false;
             for (int i = 0; i < listMatHangDaChon.size(); i++) {
-                RecordSanPham recordSanPham =listMatHangDaChon.get(i) ;
+                RecordSanPham recordSanPham = listMatHangDaChon.get(i);
                 SanPham pham = recordSanPham.getPham();
                 int soLuong2 = recordSanPham.getSoLuong();
                 if (compareSanPham(pham, sp)) {
@@ -1177,7 +1226,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
         String donGia = jTableMatHangThem.getValueAt(row, 6).toString();
         for (int i = 0; i < listMatHangDaChon.size(); i++) {
             RecordSanPham recordSanPham = new RecordSanPham();
-            recordSanPham=listMatHangDaChon.get(i);
+            recordSanPham = listMatHangDaChon.get(i);
             SanPham pham = recordSanPham.getPham();
             int soluong2 = recordSanPham.getSoLuong();
             String maMH2 = pham.getMaMatHang();
@@ -1186,7 +1235,7 @@ public class GDNhapHangFrm extends javax.swing.JFrame {
             String dvt2 = pham.getDonViTinh();
             int gia2 = pham.getGia();
             if (ma.equals(maMH2) && tenMH.equals(tenMH2) && hsd.equals(hsd2) && soLuong == soluong2 && row != -1) {
-                 listMatHangDaChon.remove(i);
+                listMatHangDaChon.remove(i);
                 break;
             }
 

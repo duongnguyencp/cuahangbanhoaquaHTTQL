@@ -22,6 +22,7 @@ public class MatHangDAO extends DAO {
         super();
     }
     public ArrayList<MatHang> getAllMatHang() {
+        System.out.println("dang get All Mat Hang");
         PreparedStatement stm = null;
         ResultSet rs = null;
         String sql = "select *  from [MatHang]";

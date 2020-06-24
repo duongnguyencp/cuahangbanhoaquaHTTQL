@@ -110,7 +110,7 @@ public class NhanVienDAO extends DAO {
     public ArrayList<NhanVien> getAllNVKho(){
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = " select * from  [NhanVien]  inner join [Nguoi] on NhanVien.idNhanVien=Nguoi.idNguoi where vaiTro=N'Quản lí kho'";
+        String sql = " select * from  [NhanVien]  inner join [Nguoi] on NhanVien.idNguoi=Nguoi.idNguoi where vaiTro=N'Quản lí kho'";
         ArrayList<NhanVien> listNhanVien = new ArrayList<>();
         try {
             stm = con.prepareStatement(sql);

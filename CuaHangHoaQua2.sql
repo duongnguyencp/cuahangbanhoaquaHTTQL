@@ -1,4 +1,4 @@
-﻿CREATE TABLE [CuaHangHoaQua].[dbo].[Nguoi] (
+﻿CREATE TABLE [CuaHangHoaQua2].[dbo].[Nguoi] (
     idNguoi int PRIMARY KEY IDENTITY(1,1),
     email varchar(255),
     ngaySinh nvarchar(255),
@@ -7,7 +7,7 @@
     diaChi nvarchar(255),
 	hoTen nvarchar (255) not null
 );
-drop table [CuaHangHoaQua].[dbo].[Nguoi];
+drop table [CuaHangHoaQua2].[dbo].[Nguoi];
 create table [CuaHangHoaQua2].[dbo].[CongTy](
 	idCongTy int PRIMARY KEY IDENTITY(1,1),
 	tenCongTy nvarchar (255) not null,
@@ -177,7 +177,6 @@ CREATE TABLE [CuaHangHoaQua2].[dbo].HoaDonBanHang (
 	foreign key (idSanPham) references SanPham(idSanPham),
 	foreign key (idNhanVien) references NhanVien(idNhanVien)
 );
-drop table
 CREATE TABLE [CuaHangHoaQua2].[dbo].SPDB (
     idSPDB int PRIMARY KEY IDENTITY(1,1),
 	idHoaDonBanHang int not null,
@@ -242,9 +241,6 @@ SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].CuaHang OFF;
 /*--------------Nguoi---------------*/
 delete from [CuaHangHoaQua2].[dbo].Nguoi
 SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].Nguoi ON;  
-
-sp_adjustpublisheridentityrange @table_name = '[CuaHangHoaQua2].[dbo].Nguoi'
-
 insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(1,N'aengel0@imdb.com','20/10/1957','Female','Universitas Trisakti',N'L17-11 Tầng 17 Tòa nhà Vincom Center số 72 Lê Thánh Tôn, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh','Ailey Engel');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(2,N'tliptrot1@constantcontact.com','28/05/1937','Female','	Universiti Malaya',N'704/16 Đường Hương Lộ 2, Phường Bình Trị Đông A, Quận Bình Tân, Thành phố Hồ Chí Minh','Trenna Liptrot');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(3,N'fmcmonies2@chron.com','04/05/1950','Male','	Universiti Malaya',N'Tầng 12A, tòa nhà VTC Online, số 18 đường Tam Trinh, Phường Minh Khai, Quận Hai Bà Trưng, Thành phố Hà Nội','Francisco McMonies');
@@ -261,18 +257,21 @@ insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan
 insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(14,N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Ho Chi MInh','Peadar Abdy');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(14,N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Ho Chi MInh','Nguyễn Thị Thoa');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(1000,N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Ho Chi MInh','Nguyễn Thị Hiền');
+insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(87001,N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Nha Trang',N'Nguyễn Thị Thu');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Nha Trang',N'Nguyễn Thị Thu');
-insert into [CuaHangHoaQua2].[dbo].Nguoi (email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Nha Trang',N'Nguyễn Thị Thu');
+insert into [CuaHangHoaQua2].[dbo].Nguoi (idNguoi,email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Nha Trang',N'Nguyễn Thị Thu');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Ha Noi',N'Nguyễn Thị Anh');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Ha Noi',N'Nguyễn Thị Tanh');
 insert into [CuaHangHoaQua2].[dbo].Nguoi (email,ngaySinh,gioiTinh,hocVan,diaChi,hoTen) values(N'mle7@sourceforge.net','16/04/1948','Male','University of Windsor',N'TP Ha Noi',N'Nguyễn Thị Chanh');
 SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].Nguoi OFF;  
 /*-------------NhanVien-------------*/
 delete from [CuaHangHoaQua2].[dbo].NhanVien
-SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].NhanVien OFF;  
+SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].NhanVien ON;  
 insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(1,N'Kế toán',N'visaotrongtimanh_1998@yahoo.com','10khongco',1,1,1);
 insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(2,N'Quản lí kho',N'visaotrongtimanh_1998@yahoo.com','10khongco',3,1,2);
-insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(3,N'Quản lí kho',N'visaotrongtimanh_1998@yahoo.com','10khongco',3,1,3);
+insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(2,N'Quản lí kho',N'visaotrongtimanh_1998@yahoo.com','10khongco',3,1,2);
+insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'visaotrongtimanh_1998@yahoo.com','10khongco',3,3,127002);
+
 insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(4,N'Quản lí kho',N'adiperaus2@mapquest.com','10khongco',3,1,4);
 insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(5,N'Quản lí kho',N'glipscomb3@wufoo.com','10khongco',3,1,5);
 insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(6,N'Quản lí kho',N'gchastel4@redcross.org','10khongco',3,1,6);
@@ -288,19 +287,25 @@ insert into [CuaHangHoaQua2].[dbo].NhanVien (idNhanVien,vaiTro,username,[passwor
 insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'pabdy6@globo.com','10khongco',3,3,25);
 insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'mle7@sourceforge.net','10khongco',3,3,26);
 insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'pabdy6@globo.com','10khongco',3,2,27);
+insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'mle7@sourceforge.net','10khongco',3,2,87001);
+insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Bán Hàng',N'mle7@sourceforge.net','10khongco',4,2,87001);
+
 insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Quản lí kho',N'mle7@sourceforge.net','10khongco',3,2,28);
-insert into [CuaHangHoaQua2].[dbo].NhanVien (vaiTro,username,[password],idBoPhan,idCuaHang,idNguoi) values(N'Bán Hàng',N'mle7@sourceforge.net','10khongco',4,2,105025);
+
+
 SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].NhanVien OFF; 
 /*------------------KHO-----------------*/
 delete from [CuaHangHoaQua2].[dbo].Kho 
 SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].Kho ON;  
-insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (1,1,N'TP Hồ Chi Minh');
-insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (2,3,N'TP Hà Nội');
-insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (3,7,N'TP Nha Trang');
+insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (270009,1,N'TP Hồ Chi Minh');
+insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (270010,86015,N'TP Hà Nội');
+
+insert into [CuaHangHoaQua2].[dbo].Kho (idNhanVien,diaChi) values (126016,N'TP Nha Trang');
+
 insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (104003,25,N'TP Nha Trang');
 insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (104004,26,N'TP Nha Trang');
 insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (104005,27,N'TP Ha Noi');
-insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (104006,28,N'TP Ha Noi');
+insert into [CuaHangHoaQua2].[dbo].Kho (idKho,idNhanVien,diaChi) values (270008,18,N'TP Ha Noi');
 SET IDENTITY_INSERT [CuaHangHoaQua2].[dbo].Kho OFF; 
 /*------------------Select-------------*/
 select * from [CuaHangHoaQua2].[dbo].Kho inner join [CuaHangHoaQua2].[dbo].NhanVien ON NhanVien.idNhanVien=Kho.idKho
@@ -341,10 +346,16 @@ select subscriber_db, publication, article, subscriber, ranges_allocated, range_
 from MSmerge_identity_range_allocations
 where article = 'dbo.Nguoi' and is_pub_range = 0
 order by subscriber_db;
+select *  from [BoPhan]
 
+delete from BienLaiKho
+delete from BienLaiNhap
+delete from SanPham
+delete from BienLaiXuat
+delete from NhanVien
+delete from Kho
 
-
-sp_adjustpublisheridentityrange @table_name = 'Nguoi',
+sp_adjustpublisheridentityrange @table_name = 'Nguoi'
 sp_adjustpublisheridentityrange @table_name = 'ChiNhanh'
 sp_adjustpublisheridentityrange @table_name = 'BienLaiKho'
 sp_adjustpublisheridentityrange @table_name = 'BienLaiNhap'
@@ -360,6 +371,8 @@ SP_HELPCONSTRAINT 'Nguoi'
 sp_adjustpublisheridentityrange @table_name = 'HoaDonBanHang'
 sp_adjustpublisheridentityrange @table_name = 'HopDong'
 sp_adjustpublisheridentityrange @table_name = 'Kho'
+sp_adjustpublisheridentityrange @table_name = 'SPDB'
+
 
   use distribution;
 select subscriber_db, publication, article, subscriber, ranges_allocated, range_begin,range_end,next_range_begin,next_range_end,max_used
